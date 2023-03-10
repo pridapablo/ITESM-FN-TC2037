@@ -190,4 +190,11 @@ Gabriel Rodriguez de los Reyes
         (loop (cdr lst) (append (replicate (car lst) n) res) (+ n 1))))) ; using append adds the elements to the end of the list after replicating them using the replicate function defined above. We call the function again with the rest of the list (excluding the first element), the resulting list, and n + 1 (because we replicated the first element of the list n times, so we need to replicate the next element n + 1 times)
 
 ;;; 20. The binary function receives an integer n as input (n ≥ 0). If n is equal to zero, it returns an empty list. If n is greater than zero, it returns a list with a sequence of ones and zeros equivalent to the binary representation of n.
-; Not implemented yet
+(define (binary num)
+    (reverse (binCalcu num '())))
+
+(define (binCalcu num lst) ; function that calculates the binary representation of a number
+    (cond
+    [(equal? num 0) lst] ; if the number is 0 return the resulting list 
+    [(equal? 1 (remainder num 2)) (cons 1 (binCalcu (quotient num 2) lst))] ; if the remainder of the number divided by 2 is 1 add 1 to the resulting list and call the function again with the quotient of the number divided by 2 and the resulting list
+    [(equal? 0 (remainder num 2)) (cons 0 (binCalcu (quotient num 2) lst))])) ; if the number is exactly divisible by 2, add 0 to the resulting list and call the function again with the quotient of the number divided by 2 and the resulting list

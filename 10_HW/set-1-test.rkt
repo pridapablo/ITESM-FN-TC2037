@@ -229,5 +229,5 @@
 ;;; (run-tests test-replic)
 (displayln "19. Testing: expand")
 (run-tests test-expand)
-;;; (displayln "20. Testing: binary") ; Issue
-;;; (run-tests test-binary)
+(displayln "20. Testing: binary") ; Issue
+(run-tests test-binary)
