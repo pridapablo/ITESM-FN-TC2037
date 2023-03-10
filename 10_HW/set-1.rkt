@@ -131,24 +131,24 @@ Gabriel Rodriguez de los Reyes
 
 ;;; !14: The swapper function takes three inputs: two values a and b, and a list lst. It returns a new list in which each occurrence of a in lst is exchanged for b, and vice versa. Any other element of lst remains the same. It can be assumed that there are no nested lists in lst.
 (define(swapper a b lst)
-    (cond
-        [(null? lst) '()]
-        [(equal? (car lst) a) (cons b (swapper a b (cdr lst)))]
-        [(equal? (car lst) b) (cons a (swapper a b (cdr lst)))]
-        [else (cons (car lst) (swapper a b (cdr lst)))])
+    (cond ; list of conditions
+        [(null? lst) '()] ; if the list is empty return an empty list (base case)
+        [(equal? (car lst) a) (cons b (swapper a b (cdr lst)))] ; if the first element of the list is equal to a, add b to the resulting list and call the function again with the rest of the list (excluding the first element). This will replace all occurrences of a with b (swapping them)
+        [(equal? (car lst) b) (cons a (swapper a b (cdr lst)))] ; if the first element of the list is equal to b, add a to the resulting list and call the function again with the rest of the list (excluding the first element). This will replace all occurrences of b with a (swapping them)
+        [else (cons (car lst) (swapper a b (cdr lst)))]) ; otherwise add the first element of the list to the resulting list and call the function again with the rest of the list. No swapping is needed because the first element of the list is not equal to a or b.
 )
 
 ;;; !15. The dot-product function takes two inputs: the lists a and b. It returns the result of performing the dot product of a by b. The dot product is an algebraic operation that takes two sequences of numbers of equal length and returns a single number obtained by multiplying the elements in the same position and then adding those products. Its formula is:
 ;;;;;; a · b = a1 * b1 + a2 * b2 + ... + an * bn
 (define (dot-product a b)
-    ;;; (dot-product '(1 2 3) '(4 5 6)) => 32
-    (if (empty? a) ;;; if a is empty
-        0 ;;; return 0
-        (+ (* (car a) (car b)) (dot-product (cdr a) (cdr b))))) ;;; else return the sum of the product of the first elements of a and b, and the dot-product of the rest of a and b (recursion))
+    ;;; example: (dot-product '(1 2 3) '(4 5 6)) => 32
+    (if (empty? a) ; if a (a list of elements) is empty
+        0 ; return 0
+        (+ (* (car a) (car b)) (dot-product (cdr a) (cdr b))))) ; else return the sum of the product of the first elements of a and b, and the dot-product of the rest of a and b (recursion)
 
 (define (dot-product-tail a b) ;;; tail recursive version of dot-product
     (let loop
-     ([a a]
+     ([a a] 
      [b b]
      [res 0])
         (if (empty? a)
@@ -157,21 +157,23 @@ Gabriel Rodriguez de los Reyes
 
 ;;; !16. The average function receives a list of numbers lst as input. It returns the arithmetic mean of the elements contained in lst, or 0 if lst is empty. The arithmetic mean is defined as:
 ;;;;;; μ = 1/n * ∑x_i
-(define (average lst)
-  (if (null? lst)
-  0
-  (/ (sum lst) (length lst))))
+(define (average lst) 
+  (if (null? lst) ; if the list is empty
+  0 ; return 0
+  (/ (sum lst) (length lst)))) ; else return the sum of the elements of the list (using the sum function defined below) divided by the length of the list (average or arithmetic mean)
 
 
 (define (sum lst)
-    (if (null? lst)
-        0
-        (+ (car lst) (sum (cdr lst)))))
+    (if (null? lst) ; if the list is empty
+        0 ; return 0
+        (+ (car lst) (sum (cdr lst))))) ; else return the sum of the first element of the list and the sum of the rest of the list (recursion)
 
 ;;; 17. The standard-deviation function receives a list of numbers lst as input. It returns the standard deviation of the population of the elements contained in lst, or 0 if lst is empty. The standard deviation of the population (σ) is defined as:
 ;;;;;; σ = √(1/n * ∑(x_i - μ)^2)
+; Not implemented yet
 
 ;;; 18. The replic function takes two inputs: a list lst and an integer n, where n ≥ 0. It returns a new list that replicates each element contained in lst n times.
+; Not implemented yet
 
 ;;; 19. The expand function takes a list lst as input. It returns a list where the first element of lst appears once, the second element appears twice, the third element appears three times, and so on.
 (define (expand lst)
@@ -184,3 +186,4 @@ Gabriel Rodriguez de los Reyes
         (loop (cdr lst) (append (replicate (car lst) n) res) (+ n 1)))))
 
 ;;; 20. The binary function receives an integer n as input (n ≥ 0). If n is equal to zero, it returns an empty list. If n is greater than zero, it returns a list with a sequence of ones and zeros equivalent to the binary representation of n.
+; Not implemented yet
