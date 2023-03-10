@@ -31,7 +31,7 @@ Gabriel Rodriguez de los Reyes
 ;;;;;; 40 ≤ BMI      obese3
 ;;;;;; The bmi function receives two inputs: weight and height. It should returns a symbol representing the corresponding BMI description calculated from those inputs.
 (define (bmi weight height)
-    (let ([bmi (/ weight (expt height 2))])
+    (let ([bmi (/ weight (expt height 2))]) ; calculate the bmi
         (cond ; list of conditions to check bmi ranges
             [(< bmi 20) 'underweight]
             [(< bmi 25) 'normal]
@@ -66,27 +66,27 @@ Gabriel Rodriguez de los Reyes
     (let loop
         ([b b] ; exponent
         [a a] ; base
-        [res 1]) ; (initialized to 1)
-        (if (zero? b) ; if b = 0 return the accumulator, since a^0 = 1
+        [res 1]) ; result, initialized to 1
+        (if (zero? b) ; if b = 0 return , since a^0 = 1 (base case)
         res 
-        (loop (sub1 b) a (* a res))))) ; otherwise call the function again with the next exponent (downwards) and multiply the accumulator by 
+        (loop (sub1 b) a (* a res))))) ; otherwise call the function again with the next exponent (downwards) and multiply the base by the result
 
 ;;; 8. The fib function takes a positive integer n as input and returns the corresponding element of the Fibonacci sequence, which is mathematically defined as follows:
-;;;;;; fib(n) = n si n ≤ 1
-;;;;;; fib(n) = fib(n-1) + fib(n-2) si n > 1
+;;;;;; fib(n) = n if n ≤ 1
+;;;;;; fib(n) = fib(n-1) + fib(n-2) if n > 1
 (define (fib n)
     (let loop
         ([n n]
         [a 0]
-        [b 1])
-        (if (zero? n)
+        [b 1]) 
+        (if (zero? n) ; if n = 0 return a (base case)
         a
-        (loop (sub1 n) b (+ a b)))))
+        (loop (sub1 n) b (+ a b))))) 
 
 ;;; 9: The enlist function takes a list lst as input. It places every top-level element of lst inside another list and returns the resulting list.
 (define (enlist lst)
     (let loop
-        ([lst lst]
+        ([lst lst] 
         [res '()])
         (if (empty? lst)
         (reverse res)
@@ -96,38 +96,38 @@ Gabriel Rodriguez de los Reyes
 (define (positives lst)
     (let loop
         ([lst lst]
-        [res '()])
-        (if (empty? lst)
-        (reverse res)
-        (if (> (car lst) 0)
-            (loop (cdr lst) (cons (car lst) res))
-            (loop (cdr lst) res)))))
+        [res '()]) ; resulting list
+        (if (empty? lst) ; if the list is empty return the resulting list
+        (reverse res) ; we reverse the resulting list because cons is more efficient than append, so we add elements to the beginning of the list
+        (if (> (car lst) 0) ; if the first element of the list is positive
+            (loop (cdr lst) (cons (car lst) res)) ; add it to the resulting list and call the function again with the rest of the list (excluding the first element)
+            (loop (cdr lst) res))))) ; otherwise call the function again with the rest of the list (excluding the first element). We don't need to add the element to the resulting list because it is negative
 
 ;;; 11. The add-list function returns the sum of the numbers contained in the list passed as input, or 0 if it is empty.
 (define (add-list lst)
     (let loop
         ([lst lst]
-        [res 0])
-        (if (empty? lst)
+        [res 0]) ; result, initialized to 0
+        (if (empty? lst) ; if the list is empty return the result (base case is 0)
         res
-        (loop (cdr lst) (+ (car lst) res)))))
+        (loop (cdr lst) (+ (car lst) res))))) ; otherwise add the first element of the list to res (our sum) and call the function again with the rest of the list (excluding the first element). Once the list is empty, the result will be the sum of all elements.
 
 ;;; 12. The invert-pairs function takes as input a list whose content are two-element lists. It returns a new list with each pair inverted.
 (define (invert-pairs lst)
     (let loop
         ([lst lst]
-        [res '()])
-        (if (empty? lst)
-        (reverse res)
-        (loop (cdr lst) (cons (list (cadr (car lst)) (car (car lst))) res)))))
+        [res '()]) ; resulting list
+        (if (empty? lst) ; if the list is empty return the resulting list (base case is an empty list)
+        (reverse res) ; we reverse the resulting list because cons is more efficient than append, so we add elements to the beginning of the list
+        (loop (cdr lst) (cons (list (cadr (car lst)) (car (car lst))) res))))) ; otherwise add the first element of the list to the resulting list and call the function again with the rest of the list (excluding the first element). 
 
 ;;; !13. The list-of-symbols? function takes a list lst as input. It returns true if all elements (possibly zero) contained in lst are symbols, or false otherwise.
 (define (list-of-symbols? lst)
-    (if (empty? lst)
-        #t
-        (if (symbol? (car lst))
-            (list-of-symbols? (cdr lst))
-            #f)))
+    (if (empty? lst) ; if the list is empty (has zero elements) return true (base case)
+        #t 
+        (if (symbol? (car lst)) ; if the first element of the list is a symbol
+            (list-of-symbols? (cdr lst)) ; call the function again with the rest of the list (excluding the first element) to check if the rest of the list is a list of symbols
+            #f))) ; otherwise return false (because the first element of the list is not a symbol), thus the list is not a list of symbols
 
 ;;; !14: The swapper function takes three inputs: two values a and b, and a list lst. It returns a new list in which each occurrence of a in lst is exchanged for b, and vice versa. Any other element of lst remains the same. It can be assumed that there are no nested lists in lst.
 (define(swapper a b lst)
