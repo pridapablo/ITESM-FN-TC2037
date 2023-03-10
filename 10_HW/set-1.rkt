@@ -20,6 +20,7 @@ Gabriel Rodriguez de los Reyes
         [else 0])) ; if n equals 0 return 0 (we don't check the condition for efficiency)
 
 ;;; 3. The roots function returns the root that solves a quadratic equation from its three coefficients a, b, and c, which are received as inputs. The general formula should be used to solve the quadratic equation.
+; Not implemented yet
 
 ;;; 4.  Body Mass Index (BMI) is used to determine whether a person's weight-to-height ratio is adequate. BMI is calculated using the formula: BMI = weight / height^2.
 ;;;;;;  Here, weight is in kilograms and height is in meters. We can classify different ranges of BMI based on the following table:
@@ -177,13 +178,13 @@ Gabriel Rodriguez de los Reyes
 
 ;;; 19. The expand function takes a list lst as input. It returns a list where the first element of lst appears once, the second element appears twice, the third element appears three times, and so on.
 (define (expand lst)
-    (let loop
-        ([lst lst]
-        [res '()]
-        [n 1])
-        (if (empty? lst)
-        (reverse res)
-        (loop (cdr lst) (append (replicate (car lst) n) res) (+ n 1)))))
+    (let loop 
+        ([lst lst] ; list to be expanded
+        [res '()] ; resulting list
+        [n 1]) ; number of times the element of the list will be expanded
+        (if (empty? lst) ; if the list is empty return the resulting list (base case)
+        (reverse res) ; we reverse the resulting list because cons is more efficient than append, so we add elements to the beginning of the list
+        (loop (cdr lst) (append (replicate (car lst) n) res) (+ n 1))))) ; otherwise add the first element of the list to the resulting list n times using the replicate function and call the function again with the rest of the list (excluding the first element).
 
 ;;; 20. The binary function receives an integer n as input (n ≥ 0). If n is equal to zero, it returns an empty list. If n is greater than zero, it returns a list with a sequence of ones and zeros equivalent to the binary representation of n.
 ; Not implemented yet
