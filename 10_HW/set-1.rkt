@@ -45,13 +45,13 @@ Gabriel Rodriguez de los Reyes
 ;;;;;; n! = n * (n-1)! if n > 0
 
 (define (factorial n)
-  ; Use trace-let instead of let to debug the calls
-  (let loop
+; Use trace-let instead of let to debug the calls
+(let loop
     ([n n] 
-     [a 1]) ; a is the accumulator and is initialized to 1
+    [a 1]) ; a is the accumulator and is initialized to 1
     (if (zero? n) ; if n = 0 we return the accumulator
-      a
-      (loop (sub1 n) (* n a))))) ; otherwise call the function again for the next factorial (downwards) and multiply the accumulator by n
+    a
+    (loop (sub1 n) (* n a))))) ; otherwise call the function again for the next factorial (downwards) and multiply the accumulator by n
 
 ;;; 6. The duplicate function takes a list lst as input and returns a new list where each element of lst is duplicated.
 (define (duplicate lst)
@@ -141,13 +141,12 @@ Gabriel Rodriguez de los Reyes
 
 ;;; !15. The dot-product function takes two inputs: the lists a and b. It returns the result of performing the dot product of a by b. The dot product is an algebraic operation that takes two sequences of numbers of equal length and returns a single number obtained by multiplying the elements in the same position and then adding those products. Its formula is:
 ;;;;;; a · b = a1 * b1 + a2 * b2 + ... + an * bn
-(define (dot-product a b)
-    ;;; example: (dot-product '(1 2 3) '(4 5 6)) => 32
-    (if (empty? a) ; if a (a list of elements) is empty
-        0 ; return 0
-        (+ (* (car a) (car b)) (dot-product (cdr a) (cdr b))))) ; else return the sum of the product of the first elements of a and b, and the dot-product of the rest of a and b (recursion)
+(define (dot-product lst lstD)
+    (cond
+     [(or (null? lstD)(null? lst)) 0] ; if either of the lists is empty return 0 
+     [else (+(*(car lst) (car lstD)) (dot-product (cdr lst) (cdr lstD)))])) ; otherwise add the product of the first elements of the lists to the result of calling the function again with the rest of the lists (excluding the first elements). This will add the products of all elements in the lists and return the result.
 
-(define (dot-product-tail a b) ;;; tail recursive version of dot-product
+(define (dot-product-tail a b) ;;; tail recursive version of dot-product (without using the cond syntax). Also passes the unit tests.
     (let loop
      ([a a] 
      [b b]
@@ -177,14 +176,18 @@ Gabriel Rodriguez de los Reyes
 ; Not implemented yet
 
 ;;; 19. The expand function takes a list lst as input. It returns a list where the first element of lst appears once, the second element appears twice, the third element appears three times, and so on.
+(define (replicate x n)
+    (if (= n 0) ; if n is 0 return an empty list (base case)
+        '() 
+        (cons x (replicate x (- n 1))))) ; recursive function that returns a list with n elements equal to x 
 (define (expand lst)
     (let loop 
-        ([lst lst] ; list to be expanded
+        ([lst lst] 
         [res '()] ; resulting list
-        [n 1]) ; number of times the element of the list will be expanded
+        [n 1]) ; n is the number of times the element of the list will be replicated (starts at 1)
         (if (empty? lst) ; if the list is empty return the resulting list (base case)
-        (reverse res) ; we reverse the resulting list because cons is more efficient than append, so we add elements to the beginning of the list
-        (loop (cdr lst) (append (replicate (car lst) n) res) (+ n 1))))) ; otherwise add the first element of the list to the resulting list n times using the replicate function and call the function again with the rest of the list (excluding the first element).
+        (reverse res)  ; we reverse the resulting list because cons is more efficient than append, so we add elements to the beginning of the list
+        (loop (cdr lst) (append (replicate (car lst) n) res) (+ n 1))))) ; using append adds the elements to the end of the list after replicating them using the replicate function defined above. We call the function again with the rest of the list (excluding the first element), the resulting list, and n + 1 (because we replicated the first element of the list n times, so we need to replicate the next element n + 1 times)
 
 ;;; 20. The binary function receives an integer n as input (n ≥ 0). If n is equal to zero, it returns an empty list. If n is greater than zero, it returns a list with a sequence of ones and zeros equivalent to the binary representation of n.
 ; Not implemented yet
