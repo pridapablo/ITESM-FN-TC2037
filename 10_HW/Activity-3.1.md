@@ -18,7 +18,7 @@
    1. **Basis:**: $b \in L$
    2. **Recursive step:** If $u \in L$ then $aau \in L$ and $bu \in L$.
    3. **Closure:** A string $u \in L$ only if it can be obtained from the
-      basis using a finite number of applications of the recursive step.
+      basis using a finite number of applications of the recursive step, and it contains at least one $b$ and has an even number of $a$’s before the first $b$.
 
 <br>
 
@@ -49,24 +49,24 @@
 
    _**Answer:**_ Following the same logic as in the previous question:
 
-   $$Y^2 = \{b, ab, bb, bab, abb, abab\}$$
+   <!-- $$Y^2 = \{b, ab, bb, bab, abb, abab\}$$ -->
 
-   | #   | string    | #   | string | #   | string |
-   | --- | --------- | --- | ------ | --- | ------ |
-   | 1   | $\lambda$ | 2   | $b $   | 3   | $ ab $ |
-   | 4   | $aab$     | 5   | $bab $ | 6   | $ ba $ |
+   <!-- | #   | string    | #   | string | #   | string | -->
+   <!-- | --- | --------- | --- | ------ | --- | ------ | -->
+   <!-- | 1   | $\lambda$ | 2   | $b $   | 3   | $ ab $ | -->
+   <!-- | 4   | $aab$     | 5   | $bab $ | 6   | $ ba $ | -->
 
    d. List the strings in set $X^* Y^*$ of length four or less
 
    _**Answer:**_
 
-   | #   | string | #   | string | #   | string |
-   | --- | ------ | --- | ------ | --- | ------ |
-   | 1   | λ      | 2   | b      | 3   | ab     |
-   | 4   | bb     | 5   | abb    | 6   | abab   |
-   | 7   | bab    | 8   | bbab   | 9   | abbb   |
-   | 10  | aabb   | 11  | aaba   | 12  | aabl   |
-   | 13  | bbaa   | 14  | bbab   | 15  | bbl    |
+   <!-- | #   | string | #   | string | #   | string | -->
+   <!-- | --- | ------ | --- | ------ | --- | ------ | -->
+   <!-- | 1   | λ      | 2   | b      | 3   | ab     | -->
+   <!-- | 4   | bb     | 5   | abb    | 6   | abab   | -->
+   <!-- | 7   | bab    | 8   | bbab   | 9   | abbb   | -->
+   <!-- | 10  | aabb   | 11  | aaba   | 12  | aabl   | -->
+   <!-- | 13  | bbaa   | 14  | bbab   | 15  | bbl    | -->
 
 3. Give a recursive definition of the set $\{ a^ib^j | 0 ≤ i ≤ j ≤ 2i\}$
 
@@ -149,7 +149,6 @@
    $$bbaaaabb \notin L$$
 
    Analogus to the previous answer, it is not possible to produce a string with two consecutive "a" characters, so the string "bbaaaabb" is not in $L$, since it contains the substring "aa".
-
 
 5. Prove, using induction on the length of a string, that $(w^R)^R = w$ for all
    string $w \in \Sigma$
