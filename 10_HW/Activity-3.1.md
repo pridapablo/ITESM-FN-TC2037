@@ -192,3 +192,21 @@
     string $w \in \Sigma$
 
     _**SOLUTION:**_
+
+    **Base Case**: Let $w$ be a empty string, where $w = λ$. Then, $w^R = λ$ and $(w^R)^R = λ$. Thus, $(w^R)^R = w$.
+
+    **Inductive Step**: Let $w$ be a string of length $n$ (where 0 ≤ n), where $w = a_1a_2...a_n$. Then, $w^R = a_n...a_2a_1$ and $(w^R)^R = a_1a_2...a_n$. Thus, $(w^R)^R = w$.
+
+    Lets assume that $(u^R)^R = u$ for all strings $u$ of length $n$(where 0 ≤ n). Lets define w as n+1, where w can be rewritten as $w = xu$, in which x is a string of length n and u is a single character.
+
+    Then, $w^R = u^Rx^R$
+
+    and $(w^R)^R = (x^Ru^R)^R$.
+
+    By the inductive hypothesis we can say $(w^R)^R = (x^R)^Ru$.
+
+    or, $(w^R)^R = xu$
+
+    Thus, $(w^R)^R = w$.
+
+    This proves that $(w^R)^R = w$ for all strings $w \in \Sigma$.
