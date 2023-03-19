@@ -73,38 +73,16 @@
 
     d. List the strings in set $X^* Y^*$ of length four or less
 
-    _**Answer:**_
-
-    Considering the following sets:
-
-    $$X = \{aa, bb\}$$
-
-    $$X^2 = \{aaaa, aabb, bbaa, bbbbb\}$$
-
-    $$Y = \{ \lambda, b, ab\}$$
-
-    $$Y^3 = \{ \lambda, b, ab, bb, bab, abb, abab, bbb, bbab, babb, babab, abbb, abbab, ababb, ababab \}$$
-
-    Where strings of length 4 or less are:
-
-    (From $X$) aa,bb
-
-    (From $X^2$) aaaa, aabb, bbaa
-
-    (From $Y$) $\lambda$, b, ab
-
-    (From $Y^3$) bb, bab, abb, abab, bbb, bbab, babb
-
-    <!-- | #   | string    | #   | string | #   | string | -->
-    <!-- | --- | --------- | --- | ------ | --- | ------ | -->
-    <!-- | 1   | $\lambda$ | 2   | $a$    | 3   | $b$    | -->
-    <!-- | 4   | $ab$      | 5   | $aab$  | 6   | $aba$  | -->
-    <!-- | 7   | $abb$     | 8   | $aabb$ | 9   | $baa$  | -->
-    <!-- | 10  | $bab$     | 11  | $bba$  | 12  | $bb$   | -->
-    <!-- | 13  | $aaa$     | 14  | $aab$  | 15  | $abb$  | -->
-    <!-- | 16  | $bbb$     | 17  | $aaab$ | 18  | $aabb$ | -->
-    <!-- | 19  | $abab$    | 20  | $abbb$ | 21  | $baa$  | -->
-    <!-- | 22  | $baab$    | 23  | $babb$ | 24  | $bbbb$ | -->
+| #   | string    | #   | string | #   | string |
+| --- | --------- | --- | ------ | --- | ------ |
+| 1   | $\lambda$ | 2   | $a$    | 3   | $b$    |
+| 4   | $ab$      | 5   | $aab$  | 6   | $aba$  |
+| 7   | $abb$     | 8   | $aabb$ | 9   | $baa$  |
+| 10  | $bab$     | 11  | $bba$  | 12  | $bb$   |
+| 13  | $aaa$     | 14  | $aab$  | 15  | $abb$  |
+| 16  | $bbb$     | 17  | $aaab$ | 18  | $aabb$ |
+| 19  | $abab$    | 20  | $abbb$ | 21  | $baa$  |
+| 22  | $baab$    | 23  | $babb$ | 24  | $bbbb$ |
 
 3.  Give a recursive definition of the set $\{ a^ib^j | 0 ≤ i ≤ j ≤ 2i\}$
 
