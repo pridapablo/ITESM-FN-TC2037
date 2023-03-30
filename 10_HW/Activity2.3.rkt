@@ -64,7 +64,7 @@ as input, and returns a string that contains the lyrics of the song "El Pollito 
     (cond
       [(or (empty? top) (empty? bottom))
        ; If one of the lists is empty, print the last part of the song (base case)
-       "En la radio hay un Tractor\n Y el Tractor: Bruum,\n Y el Pollito: oh oh!\n"]
+       "En la radio hay un Tractor\n Y el Tractor: Bruum\n Y el Pollito: oh oh!\n"]
       ; If the lists are not empty, make a recursive call (explained in the recursive case)
       [else (string-append  "En la radio hay " (first top) "\n" (print-n-items bottom count) (loop (rest top) bottom (add1 count)) )])))
 
@@ -77,7 +77,7 @@ as input, and returns a string that contains the lyrics of the song "El Pollito 
      [acc ""]) ; Accumulator to store the lyrics (tail)
     (cond
       ; Same base case but appending the end of the song to the accumulator
-      [(or (empty? top) (empty? bottom)) (string-append acc "En la radio hay un Tractor\n Y el Tractor: Bruum,\n Y el Pollito: oh oh!\n")]
+      [(or (empty? top) (empty? bottom)) (string-append acc "En la radio hay un Tractor\n Y el Tractor: Bruum\n Y el Pollito: oh oh!\n")]
       ; Reorder the recursive call to make it tail recursive (store the lyrics in the accumulator)
       [else (loop (rest top) bottom (add1 count) (string-append acc "En la radio hay " (first top) "\n" (print-n-items-tail bottom count))) ])))
 
