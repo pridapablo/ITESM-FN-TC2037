@@ -8,17 +8,17 @@ Pablo Banzo Prida
 #lang racket
 
 ;;; Define the top and bottom parts of each line of the song as two lists
-(define top '("un Pollito Pio"
-              "una Gallina Coo"
-              "un Gallo Corocó"
-              "un Pavo Glú Glú Glú"
-              "una Paloma Ruu"
-              "un Gato Miao"
-              "un Perro Guau Guau"
-              "una Cabra Mee"
-              "un Cordero Bee"
-              "una Vaca Moo"
-              "un Toro Muu"))
+(define top '("un Pollito"
+              "una Gallina"
+              "un Gallo"
+              "un Pavo"
+              "una Paloma"
+              "un Gato"
+              "un Perro"
+              "una Cabra"
+              "un Cordero"
+              "una Vaca"
+              "un Toro"))
 
 (define bottom '(
                  " Y el Pollito Pio"
@@ -54,39 +54,42 @@ and returns a string that contains the first n elements of the list (in reverse 
       ; Otherwise, make a tail recursive call
       [else (loop (rest lst) (sub1 n) (string-append (first lst) "\n" acc))])))
 
-#| Define a function pollito-lyrics that takes two lists of lyrics and an iterator initialized as 0
+#| Define a function pollito-lyrics-helper that takes two lists of lyrics and an iterator initialized as 0
 as input, and returns a string that contains the lyrics of the song "El Pollito Pio" |#
-(define (pollito-lyrics topLyrics bottomLyrics c)
-  (let loop
-    ([top topLyrics] ; First list
-     [bottom bottomLyrics] ; Second list
-     [count c]) ; Counter to print the first n elements of the second list
-    (cond
-      [(or (empty? top) (empty? bottom))
-       ; If one of the lists is empty, print the last part of the song (base case)
-       "En la radio hay un Tractor\n Y el Tractor: Bruum\n Y el Pollito: oh oh!\n"]
-      ; If the lists are not empty, make a recursive call (explained in the recursive case)
-      [else (string-append  "En la radio hay " (first top) "\n" (print-n-items bottom count) (loop (rest top) bottom (add1 count)) )])))
+(define (pollito-lyrics)
+  (define (pollito-lyrics-helper topLyrics bottomLyrics c)
+    (let loop
+      ([top topLyrics] ; First list
+       [bottom bottomLyrics] ; Second list
+       [count c]) ; Counter to print the first n elements of the second list
+      (cond
+        [(or (empty? top) (empty? bottom))
+         ; If one of the lists is empty, print the last part of the song (base case)
+         "En la radio hay un Tractor\n Y el Tractor: Bruum\n Y el Pollito: oh oh!\n"]
+        ; If the lists are not empty, make a recursive call (explained in the recursive case)
+        [else (string-append  "En la radio hay " (first top) "\n" (print-n-items bottom count) (loop (rest top) bottom (add1 count)) )])))
+  (pollito-lyrics-helper top bottom 1))
 
-;;; Function pollito-lyrics-tail takes the same arguments as pollito-lyrics, but it is tail recursive
-(define (pollito-lyrics-tail topLyrics bottomLyrics c)
-  (let loop
-    ([top topLyrics]
-     [bottom bottomLyrics]
-     [count c]
-     [acc ""]) ; Accumulator to store the lyrics (tail)
-    (cond
-      ; Same base case but appending the end of the song to the accumulator
-      [(or (empty? top) (empty? bottom)) (string-append acc "En la radio hay un Tractor\n Y el Tractor: Bruum\n Y el Pollito: oh oh!\n")]
-      ; Reorder the recursive call to make it tail recursive (store the lyrics in the accumulator)
-      [else (loop (rest top) bottom (add1 count) (string-append acc "En la radio hay " (first top) "\n" (print-n-items-tail bottom count))) ])))
+;;; Function pollito-lyrics-helper-tail takes the same arguments as pollito-lyrics-helper,
+;;; but it is tail recursive
+(define (pollito-lyrics-tail)
+  (define (pollito-lyrics-helper-tail topLyrics bottomLyrics c)
+    (let loop
+      ([top topLyrics]
+       [bottom bottomLyrics]
+       [count c]
+       [acc ""]) ; Accumulator to store the lyrics (tail)
+      (cond
+        ; Same base case but appending the end of the song to the accumulator
+        [(or (empty? top) (empty? bottom)) (string-append acc "En la radio hay un Tractor\n Y el Tractor: Bruum\n Y el Pollito: oh oh!\n")]
+        ; Reorder the recursive call to make it tail recursive (store the lyrics in the accumulator)
+        [else (loop (rest top) bottom (add1 count) (string-append acc "En la radio hay " (first top) "\n" (print-n-items-tail bottom count))) ])))
+  (pollito-lyrics-helper-tail top bottom 1))
 
-
-; Print the lyrics of the song "El Pollito Pio"
+;;; Print the lyrics of the song using display
+; Recursive version
+(display "Recursive version:\n")
+(display (pollito-lyrics))
 ; Tail recursive version
-(display "Tail recursive version:\n" )
-(display (pollito-lyrics-tail top bottom 1))
-
-; Non tail recursive version
-(display "\n\n\nNon tail recursive version:\n")
-(display (pollito-lyrics top bottom 1))
+(display "\nTail recursive version:\n")
+(display (pollito-lyrics-tail))

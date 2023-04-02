@@ -17,6 +17,23 @@
 
 (provide (all-defined-out))
 
+; Declare the structure of a DFA
+(struct dfa (trans-func initial accept))
+
+; Define the function that evaluates a DFA
+(define (evaluate-dfa a-dfa strng)
+  " Evaluates a DFA"
+  (let loop
+    ([chars (string->list strng)]
+     [state (dfa-initial a-dfa)])
+    (cond
+      ; Member returns #t if the state is in the list of accept states
+      ; else returns the rest of the list after that index
+      [(empty? chars) (member state (dfa-accept a-dfa))] ; If the final state is an accept state
+      [else (loop (rest chars)
+                  ; Apply the transition function to get the next state
+                  ((dfa-trans-func a-dfa) state (first chars)))])))
+
 ; Transition function
 (define (transition-even-a-b state char)
   " Transition Function"
@@ -49,6 +66,9 @@
 ; An automaton is a list of states, a list of accept states, a transition function,
 ; and an initial state
 ; '(transition-even-a-b 'q0 '(q1))
-(struct dfa (trans-func initial accept))
 (define data (dfa transition-even-a-b 'q0 '(q1)))
 (dfa-initial data)
+
+; Evaluate the following strings with the automaton
+(evaluate-dfa data "ab")
+(evaluate-dfa data "aab")
