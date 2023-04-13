@@ -46,7 +46,11 @@ Gilberto Echeverria
      [tokens '()])
     (cond
       ; When the list of chars if over, check if the final state is acceptable
-      [(empty? chars) (member state (dfa-accept dfa-to-evaluate))]
+      [(empty? chars)
+       (if (member state (dfa-accept dfa-to-evaluate))
+           (reverse (cons state tokens))
+           'inv)]
+
       [else
        (let-values
            ; Apply the transition function to get the new state or not when a token is found
