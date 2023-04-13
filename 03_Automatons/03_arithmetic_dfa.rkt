@@ -139,5 +139,8 @@ Gilberto Echeverria
     ; Parenthesis is another state
     ; Consider "(" as a token and ")" as a token
     ;  ['paren (cond ...
+
+    ; Add a way to actually detect the token text (parenthesis, operators, etc)
+    ; the return value should be a list of pairs (token , text)
     ))
 
