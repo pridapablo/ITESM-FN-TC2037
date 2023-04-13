@@ -41,14 +41,24 @@ Gilberto Echeverria
     ; Convert the string into a list of characters
     ([chars (string->list strng)]
      ; Get the initial state of the DFA
-     [state (dfa-initial dfa-to-evaluate)])
+     [state (dfa-initial dfa-to-evaluate)]
+     ; The return list with all tokens found
+     [tokens '()])
     (cond
       ; When the list of chars if over, check if the final state is acceptable
       [(empty? chars) (member state (dfa-accept dfa-to-evaluate))]
-      [else (loop (cdr chars)
-                  ; Apply the transition function to get the next state
-                  ((dfa-func dfa-to-evaluate) state (car chars)))])))
-
+      [else
+       (let-values
+           ; Apply the transition function to get the new state or not when a token is found
+           ; We recieve the new-state and a flag to indicate if a token was found (new-state found)
+           ([(new-state found) ((dfa-func dfa-to-evaluate) state (car chars))])
+         (loop (cdr chars)
+               new-state
+               (cond
+                 ; If a token was found, add it to the list
+                 [found (cons found tokens)]
+                 ; If not, keep the same list
+                 [else tokens] )))])))
 
 (define (char-operator? char)
   " Identify caracters that represent arithmetic operators "
@@ -82,7 +92,7 @@ Gilberto Echeverria
               [(char-numeric? char) (values 'float #f)]
               [(or (eq? char #\e) (eq? char #\E)) (values 'e #f)]
               [(char-operator? char) (values 'op 'float )]
-              [(eq? char #\space) (values 'spa #f)]
+              [(eq? char #\space) (values 'spa 'float)]
               [else (values 'inv #f )])]
     ['e (cond
           [(char-numeric? char) (values 'exp #f)]
