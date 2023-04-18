@@ -18,7 +18,8 @@ Examples:
 > (arithmetic-lexer "45.3 - +34 / none")
 '(var spa)
 
-Gilberto Echeverria
+Pablo Banzo Prida
+& Gabriel Rodriguez de los Reyes
 2023-03-30
 |#
 
@@ -78,9 +79,13 @@ Gilberto Echeverria
               [(or (eq? char #\+) (eq? char #\-)) (values 'sign #f)]
               [(char-alphabetic? char)(values 'var #f)]
               [(eq? char #\_)(values 'var #f)]
+              [(eq? (char->integer char) 40) (values 'paren #f)]
+              ; [(eq? (char->integer char) 41) (values 'paren #f)]
               [else (values 'inv #f )])]
     ['sign (cond
              [(char-numeric? char) (values 'int #f)]
+             [(eq? (char->integer char) 40) (values 'paren #f)]
+             ;  [(eq? (char->integer char) 41) (values 'paren #f)]
              [else 'inv #f])]
     ['int (cond
             [(char-numeric? char) (values 'int #f)]
@@ -88,6 +93,8 @@ Gilberto Echeverria
             [(or (eq? char #\e) (eq? char #\E))  (values 'e #f)]
             [(char-operator? char) (values 'op 'int)]
             [(eq? char #\space) (values 'spa 'int)]
+            [(eq? (char->integer char) 40) (values 'paren #f)]
+            [(eq? (char->integer char) 41) (values 'paren #f)]
             [else (values 'inv #f )])]
     ['dot (cond
             [(char-numeric? char)  (values 'float #f)]
@@ -97,6 +104,8 @@ Gilberto Echeverria
               [(or (eq? char #\e) (eq? char #\E)) (values 'e #f)]
               [(char-operator? char) (values 'op 'float )]
               [(eq? char #\space) (values 'spa 'float)]
+              [(eq? (char->integer char) 40) (values 'paren #f)]
+              [(eq? (char->integer char) 41) (values 'paren #f)]
               [else (values 'inv #f )])]
     ['e (cond
           [(char-numeric? char) (values 'exp #f)]
@@ -109,6 +118,8 @@ Gilberto Echeverria
             [(char-numeric? char) (values 'exp #f)]
             [(char-operator? char) (values 'op 'exp)]
             [(eq? char #\space) (values 'spa 'exp)]
+            [(eq? (char->integer char) 40) (values 'paren #f)]
+            [(eq? (char->integer char) 41) (values 'paren #f)]
             [else (values 'inv #f )])]
     ['var (cond
             [(char-alphabetic? char) (values 'var #f)]
@@ -116,6 +127,8 @@ Gilberto Echeverria
             [(eq? char #\_) (values 'var #f)]
             [(char-operator? char) (values 'op 'var)]
             [(eq? char #\space) (values 'spa 'var)]
+            [(eq? (char->integer char) 40) (values 'paren #f)]
+            [(eq? (char->integer char) 41) (values 'paren #f)]
             [else (values 'inv #f )])]
     ['op (cond
            [(char-numeric? char)(values 'int 'op)]
@@ -127,6 +140,8 @@ Gilberto Echeverria
     ['spa (cond
             [(char-operator? char) (values 'op #f )]
             [(eq? char #\space) (values 'spa #f )]
+            [(eq? (char->integer char) 40) (values 'paren #f)]
+            [(eq? (char->integer char) 41) (values 'paren #f)]
             [else (values 'inv #f )])]
     ['op_spa (cond
                [(char-numeric? char) (values 'int #f )]
@@ -134,7 +149,19 @@ Gilberto Echeverria
                [(char-alphabetic? char) (values 'var #f )]
                [(eq? char #\_) (values 'var #f )]
                [(eq? char #\space) (values 'op_spa #f )]
+               [(eq? (char->integer char) 40) (values 'paren #f)]
+               ;  [(eq? (char->integer char) 41) (values 'paren #f)]
                [else (values 'inv #f )])]
+    ['paren (cond
+              [(char-numeric? char) (values 'int 'paren)]
+              [(or (eq? char #\+) (eq? char #\-)) (values 'sign 'paren)]
+              [(char-alphabetic? char) (values 'var 'paren)]
+              [(eq? char #\_)(values 'var 'paren)]
+              [(eq? char #\space) (values 'op_spa 'paren)]
+              [(eq? (char->integer char) 40) (values 'paren 'paren)]
+              [(eq? (char->integer char) 41) (values 'paren 'paren)]
+              [else (values 'inv #f )])]
+
     ; Add parentheses to detect a parenthesis (opened and closed) as a token
     ; Parenthesis is another state
     ; Consider "(" as a token and ")" as a token
@@ -144,3 +171,5 @@ Gilberto Echeverria
     ; the return value should be a list of pairs (token , text)
     ))
 
+; Use the lexer to validate a string
+(arithmetic-lexer ")")
