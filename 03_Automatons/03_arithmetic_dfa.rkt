@@ -87,6 +87,7 @@ Pablo Banzo Prida
              [(char-numeric? char) (values 'int #f)]
              [(eq? (char->integer char) 40) (values 'paren #f)]
              ;  [(eq? (char->integer char) 41) (values 'paren #f)]
+             [(eq? char #\;) (values 'comment #f)]
              [else 'inv #f])]
     ['int (cond
             [(char-numeric? char) (values 'int #f)]
@@ -96,6 +97,7 @@ Pablo Banzo Prida
             [(eq? char #\space) (values 'spa 'int)]
             [(eq? (char->integer char) 40) (values 'paren 'int)]
             [(eq? (char->integer char) 41) (values 'paren 'int)]
+            [(eq? char #\;) (values 'comment #f)]
             [else (values 'inv #f )])]
     ['dot (cond
             [(char-numeric? char)  (values 'float #f)]
@@ -107,6 +109,7 @@ Pablo Banzo Prida
               [(eq? char #\space) (values 'spa 'float)]
               [(eq? (char->integer char) 40) (values 'paren #f)]
               [(eq? (char->integer char) 41) (values 'paren #f)]
+              [(eq? char #\;) (values 'comment #f)]
               [else (values 'inv #f )])]
     ['e (cond
           [(char-numeric? char) (values 'exp #f)]
@@ -121,6 +124,7 @@ Pablo Banzo Prida
             [(eq? char #\space) (values 'spa 'exp)]
             [(eq? (char->integer char) 40) (values 'paren #f)]
             [(eq? (char->integer char) 41) (values 'paren #f)]
+            [(eq? char #\;) (values 'comment #f)]
             [else (values 'inv #f )])]
     ['var (cond
             [(char-alphabetic? char) (values 'var #f)]
@@ -130,6 +134,7 @@ Pablo Banzo Prida
             [(eq? char #\space) (values 'spa 'var)]
             [(eq? (char->integer char) 40) (values 'paren #f)]
             [(eq? (char->integer char) 41) (values 'paren #f)]
+            [(eq? char #\;) (values 'comment #f)]
             [else (values 'inv #f )])]
     ['op (cond
            [(char-numeric? char)(values 'int 'op)]
@@ -137,12 +142,16 @@ Pablo Banzo Prida
            [(char-alphabetic? char)(values 'var 'op)]
            [(eq? char #\_)(values 'var 'op)]
            [(eq? char #\space)(values 'op_spa 'op)]
+           [(eq? (char->integer char) 40) (values 'paren 'paren)]
+           [(eq? (char->integer char) 41) (values 'paren 'paren)]
+           [(eq? char #\;) (values 'comment #f)]
            [else (values 'inv #f )])]
     ['spa (cond
             [(char-operator? char) (values 'op 'spa )]
             [(eq? char #\space) (values 'spa #f)]
             [(eq? (char->integer char) 40) (values 'paren 'spa)]
             [(eq? (char->integer char) 41) (values 'paren 'spa)]
+            [(eq? char #\;) (values 'comment #f)]
             [else (values 'inv #f )])]
     ['op_spa (cond
                [(char-numeric? char) (values 'int #f )]
@@ -152,6 +161,7 @@ Pablo Banzo Prida
                [(eq? char #\space) (values 'op_spa #f )]
                [(eq? (char->integer char) 40) (values 'paren #f)]
                ;  [(eq? (char->integer char) 41) (values 'paren #f)]
+               [(eq? char #\;) (values 'comment #f)]
                [else (values 'inv #f )])]
     ['paren (cond
               [(char-numeric? char) (values 'int 'paren)]
@@ -161,6 +171,7 @@ Pablo Banzo Prida
               [(eq? char #\space) (values 'spa 'paren)]
               [(eq? (char->integer char) 40) (values 'paren 'paren)]
               [(eq? (char->integer char) 41) (values 'paren 'paren)]
+              [(eq? char #\;) (values 'comment #f)]
               [else (values 'inv #f )])]
     ['comment (cond
                 [(eq? char #\newline) (values 'start 'comment)]
@@ -177,6 +188,6 @@ Pablo Banzo Prida
     ))
 
 ; Use the lexer to validate a string
-(arithmetic-lexer ";Hola como estas 
+(arithmetic-lexer "(3 + 6)-2 ;Hola como estas 
 1 + 2 * 3 + 4")
 
