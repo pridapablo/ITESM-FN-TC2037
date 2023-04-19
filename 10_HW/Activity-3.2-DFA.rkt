@@ -135,6 +135,7 @@ Gilberto Echeverria
                [(eq? char #\_) (values 'var #f )]
                [(eq? char #\space) (values 'op_spa #f )]
                [else (values 'inv #f )])]
+
     ; Add parentheses to detect a parenthesis (opened and closed) as a token
     ; Parenthesis is another state
     ; Consider "(" as a token and ")" as a token

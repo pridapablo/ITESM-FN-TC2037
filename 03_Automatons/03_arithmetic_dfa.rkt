@@ -34,7 +34,7 @@ Pablo Banzo Prida
 
 (define (arithmetic-lexer strng)
   " Call the function to validate using a specific DFA "
-  (evaluate-dfa (dfa delta-arithmetic 'start '(int float exp var spa)) strng))
+  (evaluate-dfa (dfa delta-arithmetic 'start '(int float exp var spa paren comment)) strng))
 
 (define (evaluate-dfa dfa-to-evaluate strng)
   " This function will verify if a string is acceptable by a DFA "
@@ -67,7 +67,7 @@ Pablo Banzo Prida
 
 (define (char-operator? char)
   " Identify caracters that represent arithmetic operators "
-  (member char '(#\+ #\- #\* #\/ #\= #\^)))
+  (member char '(#\+ #\- #\* #\= #\^)))
 
 (define (delta-arithmetic state char)
   " Transition function to validate numbers
@@ -81,6 +81,7 @@ Pablo Banzo Prida
               [(eq? char #\_)(values 'var #f)]
               [(eq? (char->integer char) 40) (values 'paren #f)]
               ; [(eq? (char->integer char) 41) (values 'paren #f)]
+              [(eq? char #\;) (values 'comment #f)]
               [else (values 'inv #f )])]
     ['sign (cond
              [(char-numeric? char) (values 'int #f)]
@@ -93,8 +94,8 @@ Pablo Banzo Prida
             [(or (eq? char #\e) (eq? char #\E))  (values 'e #f)]
             [(char-operator? char) (values 'op 'int)]
             [(eq? char #\space) (values 'spa 'int)]
-            [(eq? (char->integer char) 40) (values 'paren #f)]
-            [(eq? (char->integer char) 41) (values 'paren #f)]
+            [(eq? (char->integer char) 40) (values 'paren 'int)]
+            [(eq? (char->integer char) 41) (values 'paren 'int)]
             [else (values 'inv #f )])]
     ['dot (cond
             [(char-numeric? char)  (values 'float #f)]
@@ -138,10 +139,10 @@ Pablo Banzo Prida
            [(eq? char #\space)(values 'op_spa 'op)]
            [else (values 'inv #f )])]
     ['spa (cond
-            [(char-operator? char) (values 'op #f )]
-            [(eq? char #\space) (values 'spa #f )]
-            [(eq? (char->integer char) 40) (values 'paren #f)]
-            [(eq? (char->integer char) 41) (values 'paren #f)]
+            [(char-operator? char) (values 'op 'spa )]
+            [(eq? char #\space) (values 'spa #f)]
+            [(eq? (char->integer char) 40) (values 'paren 'spa)]
+            [(eq? (char->integer char) 41) (values 'paren 'spa)]
             [else (values 'inv #f )])]
     ['op_spa (cond
                [(char-numeric? char) (values 'int #f )]
@@ -157,10 +158,14 @@ Pablo Banzo Prida
               [(or (eq? char #\+) (eq? char #\-)) (values 'sign 'paren)]
               [(char-alphabetic? char) (values 'var 'paren)]
               [(eq? char #\_)(values 'var 'paren)]
-              [(eq? char #\space) (values 'op_spa 'paren)]
+              [(eq? char #\space) (values 'spa 'paren)]
               [(eq? (char->integer char) 40) (values 'paren 'paren)]
               [(eq? (char->integer char) 41) (values 'paren 'paren)]
               [else (values 'inv #f )])]
+    ['comment (cond
+                [(eq? char #\newline) (values 'start 'comment)]
+                [else (values 'comment #f )])]
+    
 
     ; Add parentheses to detect a parenthesis (opened and closed) as a token
     ; Parenthesis is another state
@@ -172,4 +177,6 @@ Pablo Banzo Prida
     ))
 
 ; Use the lexer to validate a string
-(arithmetic-lexer ")")
+(arithmetic-lexer ";Hola como estas 
+1 + 2 * 3 + 4")
+
