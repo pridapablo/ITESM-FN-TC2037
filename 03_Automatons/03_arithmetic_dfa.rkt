@@ -190,6 +190,7 @@ Pablo Banzo Prida
 
 (arithmetic-lexer "(3 + 6)-2 ;Hola como estas \n1 + 2 * 3 + 4")
 ;  ; Numerical types
+"___NUMERICAL TYPES___"
 "Single digit"
 (arithmetic-lexer "2") ; '(("2" int)))
 "Multi digit int"
@@ -211,13 +212,14 @@ Pablo Banzo Prida
 (arithmetic-lexer "-4.51e8") ; '(("-4.51e8" exp))
 
 ;  ; Variables
+"___VARIABLES___"
 "Single variable"
 (arithmetic-lexer "data") ; '(("data" var))
 (arithmetic-lexer "data34") ; '(("data34" var))
 "Incorrect variable"
 ; (arithmetic-lexer "34data") ; #f
 "Binary operation ints"
-(arithmetic-lexer "2+1") ; '(("2" int) ("+" op) ("1" int))
+(arithmetic-lexer "2+1") ; '(("2" int) ("+" op) ("1" int)) 
 "Invalid expression"
 ; (arithmetic-lexer "/1") ; #f
 ; (arithmetic-lexer "6 + 4 *+ 1") ; #f
@@ -227,12 +229,14 @@ Pablo Banzo Prida
 (arithmetic-lexer "5.2+3.7") ; '(("5.2" float) ("+" op) ("3.7" float))
 
 ;  ; Operations with variables
+"___OPERATIONS WITH VARIABLES___"
 "Binary operation variables"
 (arithmetic-lexer "one+two") ; '(("one" var) ("+" op) ("two" var))
 "Mixed variables numbers"
 (arithmetic-lexer "one+two/45.2") ; '(("one" var) ("+" op) ("two" var) ("/" op) ("45.2" float))
 
 ;  ; Spaces between operators
+"___SPACES BETWEEN OPERATORS___"
 "Binary operation with spaces"
 (arithmetic-lexer "2 + 1") ; '(("2" int) ("+" op) ("1" int))
 "Multiple operators with spaces"
@@ -247,6 +251,7 @@ Pablo Banzo Prida
 ; '(("7.4" float) ("^" op) ("3" int) ("=" op) ("2.0" float) ("*" op) ("1" int))
 
 ;  ; Parentheses
+"___PARENTHESES___"
 "Open and close"
 (arithmetic-lexer "()") ; '(("(" par_open) (")" par_close))
 "Open space close"
@@ -263,6 +268,7 @@ Pablo Banzo Prida
 ; ("(" par_open) ("6" int) ("-" op) ("3" int) (")" par_close))
 
 ;  ; Comments
+"___COMMENTS___"
 "Variable and comment"
 (arithmetic-lexer "3; this is all") ; '(("3" int) ("; this is all" comment))
 "Expression and comment"
