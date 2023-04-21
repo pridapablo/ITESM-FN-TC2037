@@ -147,10 +147,10 @@ Pablo Banzo Prida
            [(eq? char #\;) (values 'comment #f)]
            [else (values 'inv #f )])]
     ['spa (cond
-            [(char-operator? char) (values 'op 'spa )]
+            [(char-operator? char) (values 'op #f)]
             [(eq? char #\space) (values 'spa #f)]
-            [(eq? (char->integer char) 40) (values 'paren 'spa)]
-            [(eq? (char->integer char) 41) (values 'paren 'spa)]
+            [(eq? (char->integer char) 40) (values 'paren #f)]
+            [(eq? (char->integer char) 41) (values 'paren #f)]
             [(eq? char #\;) (values 'comment #f)]
             [else (values 'inv #f )])]
     ['op_spa (cond
@@ -176,7 +176,7 @@ Pablo Banzo Prida
     ['comment (cond
                 [(eq? char #\newline) (values 'start 'comment)]
                 [else (values 'comment #f )])]
-    
+
 
     ; Add parentheses to detect a parenthesis (opened and closed) as a token
     ; Parenthesis is another state
