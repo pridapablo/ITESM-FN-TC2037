@@ -74,7 +74,7 @@ Pablo Banzo Prida
 
 (define (char-operator? char)
   " Identify caracters that represent arithmetic operators "
-  (member char '(#\+ #\- #\* #\= #\^)))
+  (member char '(#\+ #\- #\* #\= #\^ #\/)))
 
 (define (delta-arithmetic state char)
   " Transition function to validate numbers
@@ -217,7 +217,7 @@ Pablo Banzo Prida
 "Incorrect variable"
 ; (arithmetic-lexer "34data") ; #f
 "Binary operation ints"
-; (arithmetic-lexer "2+1") ; '(("2" int) ("+" op) ("1" int))
+(arithmetic-lexer "2+1") ; '(("2" int) ("+" op) ("1" int))
 "Invalid expression"
 ; (arithmetic-lexer "/1") ; #f
 ; (arithmetic-lexer "6 + 4 *+ 1") ; #f
@@ -230,7 +230,7 @@ Pablo Banzo Prida
 "Binary operation variables"
 (arithmetic-lexer "one+two") ; '(("one" var) ("+" op) ("two" var))
 "Mixed variables numbers"
-; (arithmetic-lexer "one+two/45.2") ; '(("one" var) ("+" op) ("two" var) ("/" op) ("45.2" float))
+(arithmetic-lexer "one+two/45.2") ; '(("one" var) ("+" op) ("two" var) ("/" op) ("45.2" float))
 
 ;  ; Spaces between operators
 "Binary operation with spaces"
@@ -238,9 +238,9 @@ Pablo Banzo Prida
 "Multiple operators with spaces"
 (arithmetic-lexer "6 = 2 + 1") ; '(("6" int) ("=" op) ("2" int) ("+" op) ("1" int))
 "Mixed variables numbers spaces"
-; (arithmetic-lexer "one + two / 45.2") ; '(("one" var) ("+" op) ("two" var) ("/" op) ("45.2" float))
+(arithmetic-lexer "one + two / 45.2") ; '(("one" var) ("+" op) ("two" var) ("/" op) ("45.2" float))
 "Multiple operators"
-; (arithmetic-lexer "97 /6 = 2 + 1")
+(arithmetic-lexer "97 /6 = 2 + 1")
 ; '(("97" int) ("/" op) ("6" int) ("=" op) ("2" int) ("+" op) ("1" int))
 "Multiple float operators with spaces"
 (arithmetic-lexer "7.4 ^3 = 2.0 * 1")
@@ -272,11 +272,11 @@ Pablo Banzo Prida
 ; '(("area" var) ("=" op) ("3.1415" float) ("*" op) ("raduis" var) ("^" op) ("2" int)
 ; ("; area of a circle" comment))
 "Complete expression 2"
-; (arithmetic-lexer "result = -34.6e10 * previous / 2.0 ; made up formula")
+(arithmetic-lexer "result = -34.6e10 * previous / 2.0 ; made up formula")
 ; '(("result" var) ("=" op) ("-34.6e10" exp) ("*" op) ("previous" var) ("/" op)
 ; ("2.0" float) ("; made up formula" comment))
 "Complete expression 3"
-; (arithmetic-lexer "cel = (far - 32) * 5 / 9.0 ; temperature conversion") ; '(("cel" var) ("=" op)
+(arithmetic-lexer "cel = (far - 32) * 5 / 9.0 ; temperature conversion") ; '(("cel" var) ("=" op)
 ; ("(" par_open) ("far" var) ("-" op) ("32" int) (")" par_close)
 ; ("*" op) ("5" int) ("/" op) ("9.0" float) ("; temperature conversion" comment))
 
