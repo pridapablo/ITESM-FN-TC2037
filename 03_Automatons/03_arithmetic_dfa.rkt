@@ -174,8 +174,7 @@ Pablo Banzo Prida
               [(eq? char #\;) (values 'comment #f)]
               [else (values 'inv #f )])]
     ['comment (cond
-                [(eq? char #\newline) (values 'start 'comment)]
-                [else (values 'comment #f )])]
+                [#t (values 'comment 'comment)])]
 
 
     ; Add parentheses to detect a parenthesis (opened and closed) as a token
@@ -188,6 +187,19 @@ Pablo Banzo Prida
     ))
 
 ; Use the lexer to validate a string
+
 (arithmetic-lexer "(3 + 6)-2 ;Hola como estas 
 1 + 2 * 3 + 4")
+
+; V1 Tests
+(arithmetic-lexer "2") ;'(int)
+(arithmetic-lexer "261") ;'(int)
+(arithmetic-lexer "2+1") ;'(int op int)
+(arithmetic-lexer "2 + 1") ;'(int op int)
+(arithmetic-lexer "6 = 2 + 1") ;'(int op int op int)
+; (arithmetic-lexer "97 /6 = 2 + 1") ;'(int op int op int op int)
+; (arithmetic-lexer " 2 + 1 ") ; '(int op int)
+
+; V2 Tests
+
 
