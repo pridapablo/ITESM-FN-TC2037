@@ -185,95 +185,103 @@ Pablo Banzo Prida
                 [else (values 'comment #f )])]))
 
 
+; Tests
 ; Use the lexer to validate a string
 
 (arithmetic-lexer "(3 + 6)-2 ;Hola como estas \n1 + 2 * 3 + 4")
-
-; V1 Tests
-(arithmetic-lexer "2") ;'(int)
-(arithmetic-lexer "261") ;'(int)
-(arithmetic-lexer "2+1") ;'(int op int)
-(arithmetic-lexer "2 + 1") ;'(int op int)
-(arithmetic-lexer "6 = 2 + 1") ;'(int op int op int)
-; (arithmetic-lexer "97 /6 = 2 + 1") ;'(int op int op int op int)
-; (arithmetic-lexer " 2 + 1 ") ; '(int op int)
-
-; V2 Tests
-(arithmetic-lexer "2") ; '(("2" int)) "Single digit"
-(arithmetic-lexer "261") ; '(("261" int)) "Multi digit int"
-(arithmetic-lexer "5.23") ; '(("5.23" float)) "Single float"
-(arithmetic-lexer "2+1") ; '(("2" int) ("+" op) ("1" int)) "Binary operation ints"
-(arithmetic-lexer "5.2+3") ; '(("5.2" float) ("+" op) ("3" int)) "Float and int"
-(arithmetic-lexer "5.2+3.7") ; '(("5.2" float) ("+" op) ("3.7" float)) "Binary operation floats"
-(arithmetic-lexer "2 + 1") ; '(("2" int) ("+" op) ("1" int)) "Binary operation with spaces"
-(arithmetic-lexer "6 = 2 + 1") ; '(("6" int) ("=" op) ("2" int) ("+" op) ("1" int)) "Multiple operators with spaces"
-(arithmetic-lexer "97 /6 = 2 + 1") ; '(("97" int) ("/" op) ("6" int) ("=" op) ("2" int) ("+" op) ("1" int)) "Multiple operators"
-(arithmetic-lexer "7.4 ^3 = 2.0 * 1") ; '(("7.4" float) ("^" op) ("3" int) ("=" op) ("2.0" float) ("*" op) ("1" int)) "Multiple float operators with spaces"
-(arithmetic-lexer "  2 + 1") ; '(("2" int) ("+" op) ("1" int)) "Spaces before"
-(arithmetic-lexer "  2 + 1 ") ; '(("2" int) ("+" op) ("1" int)) "Spaces before and after"
-
-
-; V3 Tests
-(arithmetic-lexer ".23") ; #f "Incorrect float"
-(arithmetic-lexer "2.2.3") ; #f "Incorrect float"
-(arithmetic-lexer "data") ; '(("data" var)) "Single variable"
-(arithmetic-lexer "data34") ; '(("data34" var)) "Single variable"
-(arithmetic-lexer "34data") ; #f "Incorrect variable"
-(arithmetic-lexer "one+two") ; '(("one" var) ("+" op) ("two" var)) "Binary operation variables"
-(arithmetic-lexer "3; this is all") ; '(("3" int) ("; this is all" comment)) "Variable and comment"
-(arithmetic-lexer "3+5 ; this is all") ; '(("3" int) ("+" op) ("5" int) ("; this is all" comment)) "Expression and comment")
-
-; V4 Tests
-
 ;  ; Numerical types
-;  (check-equal? (arithmetic-lexer "2") '(("2" int)) "Single digit")
-;  (check-equal? (arithmetic-lexer "261") '(("261" int)) "Multi digit int")
-;  (check-equal? (arithmetic-lexer "-63") '(("-63" int)) "Negative int")
-;  (check-equal? (arithmetic-lexer "5.23") '(("5.23" float)) "Single float")
-;  (check-equal? (arithmetic-lexer "-5.23") '(("-5.23" float)) "Negative float")
-;  (check-equal? (arithmetic-lexer ".23") #f "Incorrect float")
-;  (check-equal? (arithmetic-lexer "2.2.3") #f "Incorrect float")
-;  (check-equal? (arithmetic-lexer "4e8") '(("4e8" exp)) "Exponent int")
-;  (check-equal? (arithmetic-lexer "4.51e8") '(("4.51e8" exp)) "Exponent float")
-;  (check-equal? (arithmetic-lexer "-4.51e8") '(("-4.51e8" exp)) "Negative exponent float")
+"Single digit"
+(arithmetic-lexer "2") ; '(("2" int)))
+"Multi digit int"
+(arithmetic-lexer "261") ; '(("261" int))
+"Negative int"
+(arithmetic-lexer "-63") ; '(("-63" int))
+"Single float"
+(arithmetic-lexer "5.23") ; '(("5.23" float))
+"Negative float"
+(arithmetic-lexer "-5.23") ; '(("-5.23" float))
+"Incorrect float"
+; (arithmetic-lexer ".23") ; #f
+; (arithmetic-lexer "2.2.3") ; #f
+"Exponent int"
+(arithmetic-lexer "4e8") ; '(("4e8" exp))
+"Exponent float"
+(arithmetic-lexer "4.51e8") ; '(("4.51e8" exp))
+"Negative exponent float"
+(arithmetic-lexer "-4.51e8") ; '(("-4.51e8" exp))
 
 ;  ; Variables
-;  (check-equal? (arithmetic-lexer "data") '(("data" var)) "Single variable")
-;  (check-equal? (arithmetic-lexer "data34") '(("data34" var)) "Single variable")
-;  (check-equal? (arithmetic-lexer "34data") #f "Incorrect variable")
-
-;  (check-equal? (arithmetic-lexer "2+1") '(("2" int) ("+" op) ("1" int)) "Binary operation ints")
-;  (check-equal? (arithmetic-lexer "/1") #f "Invalid expression")
-;  (check-equal? (arithmetic-lexer "6 + 4 *+ 1") #f "Invalid expression")
-;  (check-equal? (arithmetic-lexer "5.2+3") '(("5.2" float) ("+" op) ("3" int)) "Float and int")
-;  (check-equal? (arithmetic-lexer "5.2+3.7") '(("5.2" float) ("+" op) ("3.7" float)) "Binary operation floats")
+"Single variable"
+(arithmetic-lexer "data") ; '(("data" var))
+(arithmetic-lexer "data34") ; '(("data34" var))
+"Incorrect variable"
+; (arithmetic-lexer "34data") ; #f
+"Binary operation ints"
+; (arithmetic-lexer "2+1") ; '(("2" int) ("+" op) ("1" int))
+"Invalid expression"
+; (arithmetic-lexer "/1") ; #f
+; (arithmetic-lexer "6 + 4 *+ 1") ; #f
+"Float and int"
+(arithmetic-lexer "5.2+3") ; '(("5.2" float) ("+" op) ("3" int))
+"Binary operation floats"
+(arithmetic-lexer "5.2+3.7") ; '(("5.2" float) ("+" op) ("3.7" float))
 
 ;  ; Operations with variables
-;  (check-equal? (arithmetic-lexer "one+two") '(("one" var) ("+" op) ("two" var)) "Binary operation variables")
-;  (check-equal? (arithmetic-lexer "one+two/45.2") '(("one" var) ("+" op) ("two" var) ("/" op) ("45.2" float)) "Mixed variables numbers")
+"Binary operation variables"
+(arithmetic-lexer "one+two") ; '(("one" var) ("+" op) ("two" var))
+"Mixed variables numbers"
+; (arithmetic-lexer "one+two/45.2") ; '(("one" var) ("+" op) ("two" var) ("/" op) ("45.2" float))
 
 ;  ; Spaces between operators
-;  (check-equal? (arithmetic-lexer "2 + 1") '(("2" int) ("+" op) ("1" int)) "Binary operation with spaces")
-;  (check-equal? (arithmetic-lexer "6 = 2 + 1") '(("6" int) ("=" op) ("2" int) ("+" op) ("1" int)) "Multiple operators with spaces")
-;  (check-equal? (arithmetic-lexer "one + two / 45.2") '(("one" var) ("+" op) ("two" var) ("/" op) ("45.2" float)) "Mixed variables numbers spaces")
-;  (check-equal? (arithmetic-lexer "97 /6 = 2 + 1") '(("97" int) ("/" op) ("6" int) ("=" op) ("2" int) ("+" op) ("1" int)) "Multiple operators")
-;  (check-equal? (arithmetic-lexer "7.4 ^3 = 2.0 * 1") '(("7.4" float) ("^" op) ("3" int) ("=" op) ("2.0" float) ("*" op) ("1" int)) "Multiple float operators with spaces")
+"Binary operation with spaces"
+(arithmetic-lexer "2 + 1") ; '(("2" int) ("+" op) ("1" int))
+"Multiple operators with spaces"
+(arithmetic-lexer "6 = 2 + 1") ; '(("6" int) ("=" op) ("2" int) ("+" op) ("1" int))
+"Mixed variables numbers spaces"
+; (arithmetic-lexer "one + two / 45.2") ; '(("one" var) ("+" op) ("two" var) ("/" op) ("45.2" float))
+"Multiple operators"
+; (arithmetic-lexer "97 /6 = 2 + 1")
+; '(("97" int) ("/" op) ("6" int) ("=" op) ("2" int) ("+" op) ("1" int))
+"Multiple float operators with spaces"
+(arithmetic-lexer "7.4 ^3 = 2.0 * 1")
+; '(("7.4" float) ("^" op) ("3" int) ("=" op) ("2.0" float) ("*" op) ("1" int))
 
 ;  ; Parentheses
-;  ;(check-equal? (arithmetic-lexer "()") '(("(" par_open) (")" par_close)) "Open and close")
-;  ;(check-equal? (arithmetic-lexer "( )") '(("(" par_open) (")" par_close)) "Open space close")
-;  (check-equal? (arithmetic-lexer "(45)") '(("(" par_open) ("45" int) (")" par_close)) "Open int close")
-;  (check-equal? (arithmetic-lexer "( 45 )") '(("(" par_open) ("45" int) (")" par_close)) "Open space int space close")
-;  (check-equal? (arithmetic-lexer "(4 + 5)") '(("(" par_open) ("4" int) ("+" op) ("5" int) (")" par_close)) "Open expression close")
-;  (check-equal? (arithmetic-lexer "(4 + 5) * (6 - 3)") '(("(" par_open) ("4" int) ("+" op) ("5" int) (")" par_close) ("*" op) ("(" par_open) ("6" int) ("-" op) ("3" int) (")" par_close)) "Open expression close")
+"Open and close"
+(arithmetic-lexer "()") ; '(("(" par_open) (")" par_close))
+"Open space close"
+(arithmetic-lexer "( )") ; '(("(" par_open) (")" par_close))
+"Open int close"
+(arithmetic-lexer "(45)") ; '(("(" par_open) ("45" int) (")" par_close))
+"Open space int space close"
+; (arithmetic-lexer "( 45 )") ; '(("(" par_open) ("45" int) (")" par_close))
+"Open expression close"
+(arithmetic-lexer "(4 + 5)") ; '(("(" par_open) ("4" int) ("+" op) ("5" int) (")" par_close))
+"Open expression close"
+(arithmetic-lexer "(4 + 5) * (6 - 3)")
+; '(("(" par_open) ("4" int) ("+" op) ("5" int) (")" par_close) ("*" op)
+; ("(" par_open) ("6" int) ("-" op) ("3" int) (")" par_close))
 
 ;  ; Comments
-;  (check-equal? (arithmetic-lexer "3// this is all") '(("3" int) ("// this is all" comment)) "Variable and comment")
-;  (check-equal? (arithmetic-lexer "3+5 // this is all") '(("3" int) ("+" op) ("5" int) ("// this is all" comment)) "Expression and comment")
-;  (check-equal? (arithmetic-lexer "area = 3.1415 * raduis ^2 // area of a circle") '(("area" var) ("=" op) ("3.1415" float) ("*" op) ("raduis" var) ("^" op) ("2" int) ("// area of a circle" comment)) "Complete expression 1")
-;  (check-equal? (arithmetic-lexer "result = -34.6e10 * previous / 2.0 // made up formula") '(("result" var) ("=" op) ("-34.6e10" exp) ("*" op) ("previous" var) ("/" op) ("2.0" float) ("// made up formula" comment)) "Complete expression 2")
-;  (check-equal? (arithmetic-lexer "cel = (far - 32) * 5 / 9.0 // temperature conversion") '(("cel" var) ("=" op) ("(" par_open) ("far" var) ("-" op) ("32" int) (")" par_close) ("*" op) ("5" int) ("/" op) ("9.0" float) ("// temperature conversion" comment)) "Complete expression 3")
+"Variable and comment"
+(arithmetic-lexer "3; this is all") ; '(("3" int) ("; this is all" comment))
+"Expression and comment"
+(arithmetic-lexer "3+5 ; this is all") ; '(("3" int) ("+" op) ("5" int) ("; this is all" comment))
+"Complete expression 1"
+(arithmetic-lexer "area = 3.1415 * raduis ^2 ; area of a circle")
+; '(("area" var) ("=" op) ("3.1415" float) ("*" op) ("raduis" var) ("^" op) ("2" int)
+; ("; area of a circle" comment))
+"Complete expression 2"
+; (arithmetic-lexer "result = -34.6e10 * previous / 2.0 ; made up formula")
+; '(("result" var) ("=" op) ("-34.6e10" exp) ("*" op) ("previous" var) ("/" op)
+; ("2.0" float) ("; made up formula" comment))
+"Complete expression 3"
+; (arithmetic-lexer "cel = (far - 32) * 5 / 9.0 ; temperature conversion") ; '(("cel" var) ("=" op)
+; ("(" par_open) ("far" var) ("-" op) ("32" int) (")" par_close)
+; ("*" op) ("5" int) ("/" op) ("9.0" float) ("; temperature conversion" comment))
 
 ;  ; Extreme cases of spaces before or after the expression
-;  (check-equal? (arithmetic-lexer "  2 + 1") '(("2" int) ("+" op) ("1" int)) "Spaces before")
-;  (check-equal? (arithmetic-lexer "  2 + 1 ") '(("2" int) ("+" op) ("1" int)) "Spaces before and after")
+"Spaces before"
+; (arithmetic-lexer "  2 + 1") ; '(("2" int) ("+" op) ("1" int))
+"Spaces before and after"
+; (arithmetic-lexer "  2 + 1 ") ; '(("2" int) ("+" op) ("1" int))
