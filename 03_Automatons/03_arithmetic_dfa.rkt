@@ -67,8 +67,12 @@ Pablo Banzo Prida
                  ; If not, keep the same list
                  [else tokens])
                (cond
-                 ; If a token was found, clear the token-buffer
-                 [found '()]
+                 ; If a token was found, clear the buffer and add the current character (if not space)
+                 [found
+                  (cond
+                    [(eq? (car chars) #\space) '()]
+                    [else (list (car chars))])]
+
                  ; If not, add the current character to the token-buffer
                  [else (cons (car chars) token-buffer)])))])))
 
@@ -219,7 +223,7 @@ Pablo Banzo Prida
 "Incorrect variable"
 ; (arithmetic-lexer "34data") ; #f
 "Binary operation ints"
-(arithmetic-lexer "2+1") ; '(("2" int) ("+" op) ("1" int)) 
+(arithmetic-lexer "2+1") ; '(("2" int) ("+" op) ("1" int))
 "Invalid expression"
 ; (arithmetic-lexer "/1") ; #f
 ; (arithmetic-lexer "6 + 4 *+ 1") ; #f
