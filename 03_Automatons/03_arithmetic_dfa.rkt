@@ -37,7 +37,6 @@ Pablo Banzo Prida
   (with-handlers ([exn? (lambda (exn) #f)]) ; Catch exceptions (#f means the string is not valid)
     (evaluate-dfa (dfa delta-arithmetic 'start '(int float exp var spa paren comment)) strng)))
 
-
 (define (evaluate-dfa dfa-to-evaluate strng)
   " This function will verify if a string is acceptable by a DFA "
   (let loop
@@ -182,7 +181,7 @@ Pablo Banzo Prida
               [(or (eq? char #\+) (eq? char #\-)) (values 'sign 'paren)]
               [(char-alphabetic? char) (values 'var 'paren)]
               [(eq? char #\_)(values 'var 'paren)]
-              [(eq? char #\space) (values 'spa 'paren)]
+              [(eq? char #\space) (values 'paren #f)]
               [(eq? (char->integer char) 40) (values 'paren 'paren)]
               [(eq? (char->integer char) 41) (values 'paren 'paren)]
               [(eq? char #\;) (values 'comment #f)]
@@ -190,13 +189,3 @@ Pablo Banzo Prida
     ['comment (cond
                 [(eq? char #\newline) (values 'start 'comment)]
                 [else (values 'comment #f )])]))
-
-
-; Tests
-; Use the lexer to validate a string
-
-(arithmetic-lexer "(3 + 6)-2 ;Hola como estas \n1 + 2 * 3 + 4")
-
-"Open space int space close"
-; (arithmetic-lexer "( 45 )") ; '(("(" par_open) ("45" int) (")" par_close))
-
