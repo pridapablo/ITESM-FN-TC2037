@@ -45,17 +45,17 @@ defmodule Hw.Ariel2Test do
   # end
 
   # test "test gcd" do
-    # assert Ariel2.gcd(0, 0) == 0
-  #   assert Ariel2.gcd(3, 0) == 3
-  #   assert Ariel2.gcd(0, 2) == 2
-  #   assert Ariel2.gcd(2, 2) == 2
-  #   assert Ariel2.gcd(10, 8) == 2
-  #   assert Ariel2.gcd(8, 10) == 2
-  #   assert Ariel2.gcd(270, 192) == 6
-  #   assert Ariel2.gcd(13, 7919) == 1
-  #   assert Ariel2.gcd(20, 16) == 4
-  #   assert Ariel2.gcd(54, 24) == 6
-  #   assert Ariel2.gcd(6307, 1995) == 7
+  assert Ariel2.gcd(0, 0) == 0
+  assert Ariel2.gcd(3, 0) == 3
+  assert Ariel2.gcd(0, 2) == 2
+  assert Ariel2.gcd(2, 2) == 2
+  assert Ariel2.gcd(10, 8) == 2
+  assert Ariel2.gcd(8, 10) == 2
+  assert Ariel2.gcd(270, 192) == 6
+  assert Ariel2.gcd(13, 7919) == 1
+  assert Ariel2.gcd(20, 16) == 4
+  assert Ariel2.gcd(54, 24) == 6
+  assert Ariel2.gcd(6307, 1995) == 7
   # end
 
   # test "test deep_reverse" do
