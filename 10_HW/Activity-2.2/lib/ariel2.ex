@@ -37,26 +37,29 @@ defmodule Hw.Ariel2 do
   list that results from rotating `lst` a total of `n` elements to the left. If `n` is negative,
   rotates to the right.
   """
-  def rotate_left(lst, n),
-    do: do_rotate_left(lst, n, [])
 
-  # base case lst is empty, return the temp list that contains the rotated elements
-  defp do_rotate_left([], _n, temp),
-    do: Enum.reverse(temp)
+  def rotate_left(lst, n) do
+    IO.inspect({:rotate_left, lst, n}, label: "Initial call")
+    do_rotate_left(lst, n, [])
+  end
 
-  # when there are cero rotations, nothing to do
+  # base case: n is 0, so return the list
   defp do_rotate_left(lst, 0, _temp),
     do: lst
 
-  # when there are positive rotations (left), take the head and append it to the end of the list
-  # decrease the tail by one and add the head to the temp list
+  # empty list case
+  defp do_rotate_left([], _n, temp),
+    do: Enum.reverse(temp)
+
+  # positive rotation case
   defp do_rotate_left([head | tail], n, temp) when n > 0,
     do: do_rotate_left(tail ++ [head], n - 1, [head | temp])
 
-  # when there are negative rotations (right)
+  # negative rotation case
   defp do_rotate_left(lst, n, _temp) when n < 0,
-    # adding the length of the list to the negative number of rotations will make it positive
     do: do_rotate_left(lst, length(lst) + n, [])
+
+  # adding the length of the list to the negative number of rotations will make it positive
 
   # @doc """ !!!!4. The `prime_factors` function takes an integer `n` as input (`n` > 0) and returns
   # a list that contains the prime factors of `n` in ascending order. Prime factors are the prime
