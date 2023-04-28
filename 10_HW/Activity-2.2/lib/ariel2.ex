@@ -54,9 +54,8 @@ defmodule Hw.Ariel2 do
     do: do_rotate_left(tail ++ [head], n - 1, [head | temp])
 
   # when there are negative rotations (right)
-  # head | tail match does not help, since the item to insert is the last of the list
-  # defp do_rotate_left([head | tail], n, temp) when n < 0,
-  #   do:
+  defp do_rotate_left(lst, n, _temp) when n < 0,
+    do: do_rotate_left(lst, length(lst) + n, [])
 
   # @doc """
   # !!!!4. The `prime_factors` function takes an integer `n` as input (`n` > 0) and returns a list
