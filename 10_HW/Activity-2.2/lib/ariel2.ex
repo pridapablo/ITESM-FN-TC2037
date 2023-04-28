@@ -38,10 +38,8 @@ defmodule Hw.Ariel2 do
   rotates to the right.
   """
 
-  def rotate_left(lst, n) do
-    IO.inspect({:rotate_left, lst, n}, label: "Initial call")
-    do_rotate_left(lst, n, [])
-  end
+  def rotate_left(lst, n),
+    do: do_rotate_left(lst, n, [])
 
   # base case: n is 0, so return the list
   defp do_rotate_left(lst, 0, _temp),
@@ -51,12 +49,13 @@ defmodule Hw.Ariel2 do
   defp do_rotate_left([], _n, temp),
     do: Enum.reverse(temp)
 
-  # positive rotation case
+  # positive rotation case (left)
   defp do_rotate_left([head | tail], n, temp) when n > 0,
     do: do_rotate_left(tail ++ [head], n - 1, [head | temp])
 
-  # negative rotation case
+  # negative rotation case (right)
   defp do_rotate_left(lst, n, _temp) when n < 0,
+    # convert the negative rotation to a positive one using the length of the list
     do: do_rotate_left(lst, length(lst) + n, [])
 
   # adding the length of the list to the negative number of rotations will make it positive
@@ -80,8 +79,7 @@ defmodule Hw.Ariel2 do
   defp do_gcd(a, 0),
     do: a
 
-  # recursive case (while b is not 0) b is the new a and the remainder of a/b and use it as the new
-  # b
+  # recursive case (while b isn't 0) b is the new a and the remainder of a/b and use it as the new b
   defp do_gcd(a, b),
     # already tail recursive because the last call is the function itself
     do: do_gcd(b, rem(a, b))
