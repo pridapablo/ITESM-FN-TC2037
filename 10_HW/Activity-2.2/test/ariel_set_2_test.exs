@@ -58,30 +58,30 @@ defmodule Hw.Ariel2Test do
   assert Ariel2.gcd(6307, 1995) == 7
   # end
 
-  # test "test deep_reverse" do
-  #   assert Ariel2.deep_reverse([]) == []
-  #   assert Ariel2.deep_reverse([:a, :b]) == [:b, :a]
-  #   assert Ariel2.deep_reverse([:a, :b, :c]) == [:c, :b, :a]
-  #   assert Ariel2.deep_reverse([:a, [:b, :c, :d], 3]) == [3, [:d, :c, :b], :a]
-  #   assert Ariel2.deep_reverse([[1, 2], 3, [4, [5, 6]]]) == [[[6, 5], 4], 3, [2, 1]]
-  # end
+  test "test deep_reverse" do
+    assert Ariel2.deep_reverse([]) == []
+    assert Ariel2.deep_reverse([:a, :b]) == [:b, :a]
+    assert Ariel2.deep_reverse([:a, :b, :c]) == [:c, :b, :a]
+    assert Ariel2.deep_reverse([:a, [:b, :c, :d], 3]) == [3, [:d, :c, :b], :a]
+    assert Ariel2.deep_reverse([[1, 2], 3, [4, [5, 6]]]) == [[[6, 5], 4], 3, [2, 1]]
+  end
 
   # test "test insert_everywhere" do
   #   assert Ariel2.insert_everywhere(:x, []) == [[:x]]
-  #   assert Ariel2.insert_everywhere(:x, [:a]) == [[:x, :a], [:a, :x]]
+  # assert Ariel2.insert_everywhere(:x, [:a]) == [[:x, :a], [:a, :x]]
 
-  #   assert Ariel2.insert_everywhere(:x, [:a, :b, :c]) ==
-  #            [[:x, :a, :b, :c], [:a, :x, :b, :c], [:a, :b, :x, :c], [:a, :b, :c, :x]]
+  # assert Ariel2.insert_everywhere(:x, [:a, :b, :c]) ==
+  #          [[:x, :a, :b, :c], [:a, :x, :b, :c], [:a, :b, :x, :c], [:a, :b, :c, :x]]
 
-  #   assert Ariel2.insert_everywhere(:x, [:a, :b, :c, :d, :e]) ==
-  #            [
-  #              [:x, :a, :b, :c, :d, :e],
-  #              [:a, :x, :b, :c, :d, :e],
-  #              [:a, :b, :x, :c, :d, :e],
-  #              [:a, :b, :c, :x, :d, :e],
-  #              [:a, :b, :c, :d, :x, :e],
-  #              [:a, :b, :c, :d, :e, :x]
-  #            ]
+  # assert Ariel2.insert_everywhere(:x, [:a, :b, :c, :d, :e]) ==
+  #          [
+  #            [:x, :a, :b, :c, :d, :e],
+  #            [:a, :x, :b, :c, :d, :e],
+  #            [:a, :b, :x, :c, :d, :e],
+  #            [:a, :b, :c, :x, :d, :e],
+  #            [:a, :b, :c, :d, :x, :e],
+  #            [:a, :b, :c, :d, :e, :x]
+  #          ]
   # end
 
   # test "test pack" do
@@ -95,27 +95,16 @@ defmodule Hw.Ariel2Test do
   #   assert Ariel2.pack([9, 9, 9, 9, 9]) == [[9, 9, 9, 9, 9]]
   # end
 
-  # test "test compress" do
-  #   assert Ariel2.compress([]) == []
-  #   assert Ariel2.compress([:a]) == [:a]
+  test "test compress" do
+    assert Ariel2.compress([]) == []
+    assert Ariel2.compress([:a]) == [:a]
 
-  #   assert Ariel2.compress([:a, :a, :a, :a, :b, :c, :c, :a, :a, :d, :e, :e, :e, :e]) ==
-  #            [:a, :b, :c, :a, :d, :e]
+    assert Ariel2.compress([:a, :a, :a, :a, :b, :c, :c, :a, :a, :d, :e, :e, :e, :e]) ==
+             [:a, :b, :c, :a, :d, :e]
 
-  #   assert Ariel2.compress([1, 2, 3, 4, 5]) == [1, 2, 3, 4, 5]
-  #   assert Ariel2.compress([9, 9, 9, 9, 9]) == [9]
-  # end
-
-  # test "test encode" do
-  #   assert Ariel2.encode([]) == []
-  #   assert Ariel2.encode([:a]) == [{1, :a}]
-
-  #   assert Ariel2.encode([:a, :a, :a, :a, :b, :c, :c, :a, :a, :d, :e, :e, :e, :e]) ==
-  #            [{4, :a}, {1, :b}, {2, :c}, {2, :a}, {1, :d}, {4, :e}]
-
-  #   assert Ariel2.encode([1, 2, 3, 4, 5]) == [{1, 1}, {1, 2}, {1, 3}, {1, 4}, {1, 5}]
-  #   assert Ariel2.encode([9, 9, 9, 9, 9]) == [{5, 9}]
-  # end
+    assert Ariel2.compress([1, 2, 3, 4, 5]) == [1, 2, 3, 4, 5]
+    assert Ariel2.compress([9, 9, 9, 9, 9]) == [9]
+  end
 
   # test "test encode_modified" do
   #   assert Ariel2.encode_modified([]) == []

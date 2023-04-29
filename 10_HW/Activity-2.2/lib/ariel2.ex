@@ -71,7 +71,6 @@ defmodule Hw.Ariel2 do
   function should not be used. NOTE: The GCD of two integers is the largest positive integer that
   divides both numbers exactly. For example, the GCD of 20 and 16 is 4.
   """
-
   def gcd(a, b),
     do: do_gcd(a, b)
 
@@ -84,9 +83,25 @@ defmodule Hw.Ariel2 do
     # already tail recursive because the last call is the function itself
     do: do_gcd(b, rem(a, b))
 
-  # @doc """ !!!!6. The `deep_reverse` function takes a list as input. Returns a list with the same
-  # elements as its input but in reverse order. If there are nested lists, these should also be
-  # reversed. """
+  @doc """
+  !!!!6. The `deep_reverse` function takes a list as input. Returns a list with the same
+  elements as its input but in reverse order. If there are nested lists, these should also be
+  reversed.
+  """
+  def deep_reverse(lst),
+    do: do_deep_reverse(lst, [])
+
+  # base case: empty list (return the temp list since it's already reversed in both recursive cases)
+  defp do_deep_reverse([], temp),
+    do: temp
+
+  # case 1: list of lists, so reverse it and add it to the temp list
+  defp do_deep_reverse([head | tail], temp) when is_list(head),
+    do: do_deep_reverse(tail, [deep_reverse(head) | temp])
+
+  # case 2: item is not a list, so add it to the temp list
+  defp do_deep_reverse([head | tail], temp),
+    do: do_deep_reverse(tail, [head | temp])
 
   # @doc """
   # 7. The `insert_anywhere` function takes two inputs: an object `x` and a list `lst`. Returns a
@@ -97,14 +112,30 @@ defmodule Hw.Ariel2 do
   # 8. The `pack` function takes a list `lst` as input. Returns a list of lists that group
   #    consecutive equal elements. """
 
-  # @doc """
-  # 9. The `compress` function takes a list `lst` as input. Returns a list in which consecutive
-  #    repeating elements of `lst` are replaced by a single instance. The order of the elements
-  #    should not be changed. """
+  @doc """
+  The `compress` function takes a list `lst` as input. Returns a list in which consecutive
+  repeating elements of `lst` are replaced by a single instance. The order of the elements
+  should not be changed.
+  """
+  def compress(lst), do: do_compress(lst, [])
+
+  # base case: empty list
+  defp do_compress([], res),
+    do: Enum.reverse(res)
+
+  # if the head is the same as the next element, remove the head from the tail
+  # the hd function returns the head of the list
+  defp do_compress([head | tail], res) when head == hd(tail),
+    do: do_compress(tail, res)
+
+  # general case: add the head to the result list
+  defp do_compress([head | tail], res),
+    do: do_compress(tail, [head | res])
 
   # @doc """
   # 10. The `encode` function takes a list `lst` as input. Consecutive elements in `lst` are encoded
-  #     in lists of the form: (n e), where `n` is the number of occurrences of element `e`. """
+  # in lists of the form: (n e), where `n` is the number of occurrences of element `e`.
+  # """
 
   # @doc """
   # 11. The `encode_modified` function takes a list `lst` as input. It works the same as the
