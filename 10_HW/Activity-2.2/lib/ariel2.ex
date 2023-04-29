@@ -120,22 +120,47 @@ defmodule Hw.Ariel2 do
   def compress(lst), do: do_compress(lst, [])
 
   # base case: empty list
-  defp do_compress([], res),
-    do: Enum.reverse(res)
+  defp do_compress([], temp),
+    do: Enum.reverse(temp)
 
   # if the head is the same as the next element, remove the head from the tail
   # the hd function returns the head of the list
-  defp do_compress([head | tail], res) when head == hd(tail),
-    do: do_compress(tail, res)
+  defp do_compress([head | tail], temp) when head == hd(tail),
+    do: do_compress(tail, temp)
 
   # general case: add the head to the result list
-  defp do_compress([head | tail], res),
-    do: do_compress(tail, [head | res])
+  defp do_compress([head | tail], temp),
+    do: do_compress(tail, [head | temp])
 
-  # @doc """
-  # 10. The `encode` function takes a list `lst` as input. Consecutive elements in `lst` are encoded
-  # in lists of the form: (n e), where `n` is the number of occurrences of element `e`.
-  # """
+  @doc """
+  10. The `encode` function takes a list `lst` as input. Consecutive elements in `lst` are encoded
+  in lists of the form: (n e), where `n` is the number of occurrences of element `e`.
+  """
+  def encode(lst),
+    # helper function stores the current element and the count, aside from the tail
+    do: do_encode(lst, {}, 0, [])
+
+  # base case: empty list
+  defp do_encode([], el, i, temp) when i > 0,
+    # add the last element to the list
+    do: Enum.reverse([{i, el} | temp])
+
+  defp do_encode([], _el, 0, temp),
+    do: Enum.reverse(temp)
+
+  # case: head is the same as the element, so we increment the count and send the tail as new list
+  defp do_encode([head | tail], el, i, temp) when head == el,
+    # note: the element is still the same, so we pass it as is
+    do: do_encode(tail, el, i + 1, temp)
+
+  # case: head is != the element, so we store the tuple in temp and reset count (tail is new list)
+  defp do_encode([head | tail], el, i, temp) when i > 0,
+    # note: old element should not be passed through since we're starting a new count (new element)
+    do: do_encode(tail, head, 1, [{i, el} | temp])
+
+  # case: iterator is 0, so we set the element to the head and start counting
+  defp do_encode([head | tail], el, i, temp),
+    do: do_encode(tail, head, 1, temp)
 
   # @doc """
   # 11. The `encode_modified` function takes a list `lst` as input. It works the same as the
