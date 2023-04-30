@@ -37,12 +37,12 @@ defmodule Hw.Ariel2Test do
     assert Ariel2.rotate_left([:a, :b, :c, :d, :e, :f, :g], -45) == [:e, :f, :g, :a, :b, :c, :d]
   end
 
-  # test "test prime_factors" do
-  #   assert Ariel2.prime_factors(1) == []
-  #   assert Ariel2.prime_factors(6) == [2, 3]
-  #   assert Ariel2.prime_factors(96) == [2, 2, 2, 2, 2, 3]
-  #   assert Ariel2.prime_factors(666) == [2, 3, 3, 37]
-  # end
+  test "test prime_factors" do
+    assert Ariel2.prime_factors(1) == []
+    assert Ariel2.prime_factors(6) == [2, 3]
+    assert Ariel2.prime_factors(96) == [2, 2, 2, 2, 2, 3]
+    assert Ariel2.prime_factors(666) == [2, 3, 3, 37]
+  end
 
   # test "test gcd" do
   assert Ariel2.gcd(0, 0) == 0
