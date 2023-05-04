@@ -65,6 +65,18 @@ defmodule Hw.Ariel2 do
   # numbers that exactly divide a number. If all the prime factors are multiplied, the original
   # number is obtained. """
 
+  # the function that the user will call, calls the following function with the initial value and an empty list
+  def prime_factors(a), do: prime_calcu(a, 2, [])
+
+  # base case: a is 1, so return the list
+  defp prime_calcu(a, _b, lst) when a == 1, do: Enum.reverse(lst)
+
+  # recursive case: a is divisible by b, so add b to the list and divide a by b
+  defp prime_calcu(a, b, lst) when rem(a, b) == 0, do: prime_calcu(div(a, b), 2, [b | lst])
+
+  # recursive case: a is not divisible by b, so increment b and try again
+  defp prime_calcu(a, b, lst) when rem(a, b) != 0, do: prime_calcu(a, b + 1, lst)
+
   @doc """
   !!!!5. The `gcd` function takes two positive integer inputs `a` and `b`, where `a` > 0 and `b` >
   0. Returns the greatest common divisor (GCD) of `a` and `b`. The `gcd` or similar predefined
@@ -159,7 +171,7 @@ defmodule Hw.Ariel2 do
     do: do_encode(tail, head, 1, [{i, el} | temp])
 
   # case: iterator is 0, so we set the element to the head and start counting
-  defp do_encode([head | tail], el, i, temp),
+  defp do_encode([head | tail], _el, _i, temp),
     do: do_encode(tail, head, 1, temp)
 
   # @doc """
