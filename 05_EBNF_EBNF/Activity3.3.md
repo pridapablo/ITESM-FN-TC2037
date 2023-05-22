@@ -1,13 +1,14 @@
 <!-- BNF CFG for Elixir module and function definitions -->
-<!-- Module definition -->
 
+<!-- Module definition -->
 <module> ::= defmodule <mod_name> do <mod_body> end
 <mod_name> ::= <upper_id>
 <mod_body> ::= <function> | <function> <mod_body>
 
-<!-- Function definition -->
-
-<function> ::= <func_declaration> <func_name> <func_args> do <func_body> end
+<!-- Function definitions (considering pattern matching and guards) -->
+<function> ::= <func_declaration> <func_name> <func_args> do <func_body> end |
+               <func_declaration> <func_name> <func_args>, do: <func_body> |
+               <func_declaration> <func_name> <func_args> when <guard_expr>, do: <func_body>
 <func_declaration> ::= def | defp
 <func_name> ::= <id>
 
@@ -19,13 +20,13 @@
 <statement> ::= <id>
 
 <!-- General expressions -->
-
-<id> ::= <letter><id*rest> | <letter>
-<upper_id> ::= <upper_letter><id_rest> | <upper_letter>
-<id_rest> ::= <letter> | <digit> | * | <id*rest> <letter> | <id_rest> <digit> | <id_rest> *
+<id> ::= <letter> | <digit> | <id> <id> | <id> _
+<upper_id> ::= <upper_letter> <id>
 
 <!--  General primitives -->
-
-<letter> ::= a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
+<letter> ::= a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z | _
 <upper_letter> ::= A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
 <digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+<!-- Guard expressions -->
+<guard_expr> ::= <id>
