@@ -53,9 +53,6 @@ defmodule Syntaxhighlighter do
     # Numbers
     line = Regex.replace(~r/(\d+)/, line, "<span class=\"number\">\\1</span>")
 
-    # Comments
-    line = Regex.replace(~r/#(.*)$/, line, "<span class=\"comment\">#\\1</span>")
-
     # Keywords
     line =
       Regex.replace(
@@ -81,6 +78,9 @@ defmodule Syntaxhighlighter do
 
     # Decorators (words preceded by @)
     line = Regex.replace(~r/@(\w+)/, line, "@<span class=\"decorator\">\\1</span>")
+
+    # Comments
+    line = Regex.replace(~r/#(.*)$/, line, "<span class=\"comment\">#\\1</span>")
 
     line
   end
