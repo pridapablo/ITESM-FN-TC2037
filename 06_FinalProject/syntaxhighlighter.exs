@@ -20,7 +20,8 @@ defmodule Syntaxhighlighter do
           |> Enum.map(&highlight_line/1)
           |> Enum.join("\n")
 
-        File.write("06_FinalProject/example.html", highlighted_text)
+        html_content = build_html_content(highlighted_text)
+        File.write("06_FinalProject/example.html", html_content)
 
       {:error, reason} ->
         IO.puts("Failed to read file: #{reason}")
@@ -32,20 +33,42 @@ defmodule Syntaxhighlighter do
   """
   defp highlight_line(line) when is_binary(line) do
     # Strings
-    line = Regex.replace(~r/".*?"/, line, "<span class=\"string\">\\0</span>")
+    line = Regex.replace(~r/("[^"]*")/, line, "<span class=\"string\">\\1</span>")
 
     # Comments
-    line = Regex.replace(~r/#.*$/, line, "<span class=\"comment\">\\0</span>")
+    line = Regex.replace(~r/#(.*)$/, line, "<span class=\"comment\">#\\1</span>")
 
     # Keywords
     line =
       Regex.replace(
         ~r/(\b(and|as|assert|break|class|continue|def|del|elif|else|except|exec|finally|for|from|global|if|import|in|is|lambda|not|or|pass|print|raise|return|try|while|with|yield)\b)/,
         line,
-        "<span class=\"keyword\">\\0</span>"
+        "<span class=\"keyword\">\\1</span>"
       )
 
     line
+  end
+
+  defp build_html_content(highlighted_text) do
+    """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            .string { color: green; }
+            .comment { color: gray; }
+            .keyword { color: blue; }
+        </style>
+    </head>
+    <body>
+        #{highlighted_text}
+    </body>
+    </html>
+    """
   end
 end
 
