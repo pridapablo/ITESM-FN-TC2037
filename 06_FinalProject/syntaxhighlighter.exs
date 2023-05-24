@@ -14,11 +14,13 @@ defmodule Syntaxhighlighter do
 
     case File.read(expanded_path) do
       {:ok, text} ->
-        text
-        |> String.split("\n")
-        |> Enum.map(&highlight_line/1)
-        |> Enum.join("\n")
-        |> IO.puts()
+        highlighted_text =
+          text
+          |> String.split("\n")
+          |> Enum.map(&highlight_line/1)
+          |> Enum.join("\n")
+
+        File.write("06_FinalProject/example.html", highlighted_text)
 
       {:error, reason} ->
         IO.puts("Failed to read file: #{reason}")
@@ -34,6 +36,14 @@ defmodule Syntaxhighlighter do
 
     # Comments
     line = Regex.replace(~r/#.*$/, line, "<span class=\"comment\">\\0</span>")
+
+    # Keywords
+    line =
+      Regex.replace(
+        ~r/(\b(and|as|assert|break|class|continue|def|del|elif|else|except|exec|finally|for|from|global|if|import|in|is|lambda|not|or|pass|print|raise|return|try|while|with|yield)\b)/,
+        line,
+        "<span class=\"keyword\">\\0</span>"
+      )
 
     line
   end
