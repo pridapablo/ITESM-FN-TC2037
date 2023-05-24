@@ -4,17 +4,93 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Syntax Highlighter</title>
     <style>
         .string { color: green; }
         .comment { color: gray; }
         .keyword { color: blue; }
+        .number { color: purple; }
+        .operator { color: red; }
+        .boolean { color: orange; }
+        .function { color: brown; }
+        .parenthesis { color: brown; }
+        .method { color: brown; }
+        .decorator { color: grey; }
+
     </style>
 </head>
 <body>
-    <span <span class="keyword">class</span>="string">"Hello world"</span>
-<span <span class="keyword">class</span>="comment"># This <span class="keyword">is</span> a comment</span>
-<span class="keyword">print</span>(<span <span class="keyword">class</span>="string">"Hello world"</span>)
+<pre>
+<span class="comment"># Variable names</span>
+my_variable = <span class="number">42</span>
+another_variable = <span class="string">"Hello"</span>
 
+<span class="comment"># Extended strings <span class="parenthesis">(</span>multiline strings<span class="parenthesis">)</span></span>
+multiline_string = '''
+This is a multiline string.
+It can span across multiple lines.
+'''
+
+<span class="comment"># Parameters</span>
+<span class="keyword">def</span> <span class="function">greet</span><span class="parenthesis">(</span>name<span class="parenthesis">)</span>:
+    <span class="function">print</span><span class="parenthesis">(</span><span class="string">"Hello,"</span>, name<span class="parenthesis">)</span>
+
+<span class="function">greet</span><span class="parenthesis">(</span><span class="string">"Alice"</span><span class="parenthesis">)</span>
+
+<span class="comment"># Decorators</span>
+@<span class="decorator">decorator_function</span>
+<span class="keyword">def</span> <span class="function">my_function</span><span class="parenthesis">(</span><span class="parenthesis">)</span>:
+    <span class="function">print</span><span class="parenthesis">(</span><span class="string">"Decorated function"</span><span class="parenthesis">)</span>
+
+<span class="comment"># Dictionaries</span>
+my_dict = {
+    'key': 'value<span class="number">1</span>',
+    'key': 'value<span class="number">2</span>'
+}
+
+<span class="comment"># Escaped characters</span>
+escaped_string = <span class="string">"This is a double quote: \"</span>"
+
+<span class="comment"># Arithmetic operations</span>
+a = <span class="number">5</span> <span class="operator">+</span> <span class="number">3</span>
+b = <span class="number">10</span> <span class="operator">-</span> <span class="number">2</span>
+c = <span class="number">4</span> <span class="operator">*</span> <span class="number">2</span>
+d = <span class="number">16</span> / <span class="number">4</span>
+
+<span class="comment"># Comparison operators</span>
+<span class="keyword">if</span> a > b:
+    <span class="function">print</span><span class="parenthesis">(</span><span class="string">"a is greater than b"</span><span class="parenthesis">)</span>
+
+<span class="keyword">if</span> c < d:
+    <span class="function">print</span><span class="parenthesis">(</span><span class="string">"c is less than d"</span><span class="parenthesis">)</span>
+
+<span class="comment"># Logical operators</span>
+<span class="keyword">if</span> a > <span class="number">0</span> and b > <span class="number">0</span>:
+    <span class="function">print</span><span class="parenthesis">(</span><span class="string">"Both a and b are positive"</span><span class="parenthesis">)</span>
+
+<span class="keyword">if</span> c > <span class="number">0</span> or d > <span class="number">0</span>:
+    <span class="function">print</span><span class="parenthesis">(</span><span class="string">"At least one of c or d is positive"</span><span class="parenthesis">)</span>
+
+<span class="comment"># Control flow statements</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span><span class="parenthesis">(</span><span class="number">5</span><span class="parenthesis">)</span>:
+    <span class="function">print</span><span class="parenthesis">(</span>i<span class="parenthesis">)</span>
+
+<span class="keyword">while</span> a > <span class="number">0</span>:
+    <span class="function">print</span><span class="parenthesis">(</span>a<span class="parenthesis">)</span>
+    a <span class="operator">-</span>= <span class="number">1</span>
+
+<span class="comment"># Class definition</span>
+class Person:
+    <span class="keyword">def</span> <span class="function">__init__</span><span class="parenthesis">(</span>self, name, age<span class="parenthesis">)</span>:
+        self.<span class="method">name</span> = name
+        self.<span class="method">age</span> = age
+
+    <span class="keyword">def</span> <span class="function">greet</span><span class="parenthesis">(</span>self<span class="parenthesis">)</span>:
+        <span class="function">print</span><span class="parenthesis">(</span>f<span class="string">"Hello, my name is {self.<span class="method">name</span>} and I am {self.<span class="method">age</span>} years old."</span><span class="parenthesis">)</span>
+
+person = <span class="function">Person</span><span class="parenthesis">(</span><span class="string">"Alice"</span>, <span class="number">25</span><span class="parenthesis">)</span>
+person.<span class="function">greet</span><span class="parenthesis">(</span><span class="parenthesis">)</span>
+
+</pre>
 </body>
 </html>
