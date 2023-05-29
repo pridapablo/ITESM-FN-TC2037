@@ -12,6 +12,7 @@ It can span across multiple lines.
 # Parameters
 def greet(name):
     print("Hello,", name)
+    print('Hello, ' + name)
 
 greet("Alice")
 
@@ -67,4 +68,5 @@ class Person:
         print(f"Hello, my name is {self.name} and I am {self.age} years old.")
 
 person = Person("Alice", 25)
+
 person.greet()

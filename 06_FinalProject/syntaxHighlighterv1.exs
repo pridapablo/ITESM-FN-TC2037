@@ -38,12 +38,11 @@ defmodule Syntaxhighlighter do
   - keyword "class" is not implemented because it will match "class" in the html tag.
   - Multiline strings don't seem to work.
   Extra things to try to highlight in the syntax highlighter:
-  - Variable names (words that are not keywords, functions, methods, etc.)
   - Parameters (words followed by a comma and between parenthesis. Consider a function with only one parameter)
   - Decorators (words preceded by @)
   - Dictionaries (words followed by a colon)
   """
-  defp highlight_line(line) when is_binary(line) do
+  defp highlight_line(line) do
     # Strings
     line = Regex.replace(~r/("[^"]*")/, line, "<span class=\"string\">\\1</span>")
     # Multiline strings
