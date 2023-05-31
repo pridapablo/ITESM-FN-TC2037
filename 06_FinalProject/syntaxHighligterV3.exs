@@ -1,6 +1,7 @@
 defmodule Syntax do
   @doc """
-  Reads a Python file line by line and highlights its syntax.
+  Reads a Python file line by line (using a stream), highlights its syntax and
+  outputs an HTML file with highlighted syntax.
   """
   def highlight(file) do
     expanded_path = Path.expand(file)
@@ -12,58 +13,146 @@ defmodule Syntax do
     # Using a stream to avoid reading the whole file into memory
     highlighted_lines_stream =
       stream
-      |> Stream.map(&String.trim/1)
-      |> Stream.map(&highlight_line/1)
+      |> Stream.map(&String.trim_trailing/1)
+      |> Stream.map(&helperFun/1)
 
-    highlighted_text = Enum.join(highlighted_lines_stream, "\n")
+    {:ok, file} = File.open("06_FinalProject/example.html", [:write])
 
-    html_content = parse_html(highlighted_text)
-    File.write("06_FinalProject/example.html", html_content)
+    IO.write(file, parse_html_header())
+
+    highlighted_lines_stream
+    |> Enum.each(fn line ->
+      IO.write(file, line <> "\n")
+    end)
+
+    IO.write(file, parse_html_footer())
+
+    File.close(file)
   end
 
-  defp highlight_line(line) do
-    # Strings
-    line = Regex.replace(~r/("[^"]*")/, line, "<span class=\"string\">\\1</span>")
-    # Multiline strings
-    line = Regex.replace(~r/("""[^"]*""")/, line, "<span class=\"string\">\\1</span>")
-    line = Regex.replace(~r/('''[^']*''')/, line, "<span class=\"string\">\\1</span>")
+  @doc """
+  Helper function to highlight a line of Python code using regex and output HTML.
+  """
+  defp highlight_line(line, lst) do
+    IO.inspect(lst)
 
-    # Numbers
-    line = Regex.replace(~r/(\d+)/, line, "<span class=\"number\">\\1</span>")
+    Enum.reduce(lst, line, fn element, acc ->
+      new_line =
+        case element do
+          "string" ->
+            if not Regex.match?(~r/(?<=<span)=/, acc) do
+              acc = Regex.replace(~r/("[^"]*")/, acc, "<span class=\"string\">\\1</span>")
+              acc = Regex.replace(~r/('[^']*')/, acc, "<span class=\"string\">\\1</span>")
+            end
 
-    # Keywords
-    line =
-      Regex.replace(
-        ~r/\b(def|if|else|elif|for|while|in|return)\b/,
-        line,
-        "<span class=\"keyword\">\\1</span>"
-      )
+          "comment" ->
+            acc = Regex.replace(~r/#(.*)$/, acc, "<span class=\"comment\">#\\1</span>")
 
-    # Operators (except /)
-    line = Regex.replace(~r/(\+|\-|\*)/, line, "<span class=\"operator\">\\1</span>")
+          "parenthesis" ->
+            acc = Regex.replace(~r/(\(|\))/, acc, "<span class=\"parenthesis\">\\1</span>")
+            acc = Regex.replace(~r/\b(\w+)\(/, acc, "<span class=\"function\">\\1</span>")
 
-    # Booleans
-    line = Regex.replace(~r/\b(True|False)\b/, line, "<span class=\"boolean\">\\1</span>")
+          "number" ->
+            acc = Regex.replace(~r/(\d+)/, acc, "<span class=\"number\">\\1</span>")
 
-    # Functions (words followed by a parenthesis)
-    line = Regex.replace(~r/\b(\w+)\(/, line, "<span class=\"function\">\\1</span>(")
+          "operator" ->
+            acc = Regex.replace(~r/(\+|\-|\*)/, acc, "<span class=\"operator\">\\1</span>")
 
-    # Parenthesis
-    line = Regex.replace(~r/(\(|\))/, line, "<span class=\"parenthesis\">\\1</span>")
+          "boolean" ->
+            acc = Regex.replace(~r/\b(True|False)\b/, acc, "<span class=\"boolean\">\\1</span>")
 
-    # Methods (words preceded by a dot)
-    line = Regex.replace(~r/\.(\w+)/, line, ".<span class=\"method\">\\1</span>")
+          "method" ->
+            acc = Regex.replace(~r/\.(\w+)/, acc, ".<span class=\"method\">\\1</span>")
 
-    # Decorators (words preceded by @)
-    line = Regex.replace(~r/@(\w+)/, line, "@<span class=\"decorator\">\\1</span>")
+          "keyword" ->
+            acc =
+              Regex.replace(
+                ~r/\b(def|if|else|elif|for|while|in|return)\b/,
+                acc,
+                "<span class=\"keyword\">\\1</span>"
+              )
 
-    # Comments
-    line = Regex.replace(~r/#(.*)$/, line, "<span class=\"comment\">#\\1</span>")
+          "decorator" ->
+            acc = Regex.replace(~r/@(\w+)/, acc, "@<span class=\"decorator\">\\1</span>")
+        end
 
-    line
+      new_line
+    end)
   end
 
-  defp parse_html(highlighted_text) do
+  @doc """
+  Helper function to run the line highlighter with the list of character types that
+  the line contains (as determined by the charDetector function).
+  """
+  defp helperFun(line) do
+    highlight_line(line, Enum.uniq(charDetector(String.graphemes(line <> " "), [], "")))
+  end
+
+  @doc """
+  Function to detect the type of each character in a line of Python code to
+  only run the relevant regex on the line. This is to avoid running all regex on
+  every line.
+  """
+  defp charDetector([head | tail], list, status) do
+    if tail == [] do
+      list
+    else
+      case head do
+        a when status == "string" ->
+          if status == "string" && a in ["\"", "\'"] do
+            charDetector(tail, ["string" | list], "")
+          else
+            charDetector(tail, list, "string")
+          end
+
+        a when a in ["\"", "\'"] ->
+          if status == "string" && a in ["\"", "\'"] do
+            charDetector(tail, ["string" | list], "")
+          else
+            charDetector(tail, list, "string")
+          end
+
+        a when a in ["{", "}", "(", ")", "[", "]"] ->
+          charDetector(tail, ["parenthesis" | list], "")
+
+        "#" ->
+          charDetector([" "], ["comment" | list], "")
+
+        a when a in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] ->
+          charDetector(tail, ["number" | list], "")
+
+        a when a in [":", ",", ";", "+", "-", "*", "/", "%", "^"] ->
+          charDetector(tail, ["operator" | list], "")
+
+        "@" ->
+          charDetector(tail, ["decorator" | list], "")
+
+        "." ->
+          if status != "" do
+            charDetector(tail, ["method" | list], "")
+          end
+
+        a when status in ["true", "false"] ->
+          charDetector(tail, ["boolean" | list], "")
+
+        a when status in ["def", "if", "else", "elif", "for", "while", "in", "return"] ->
+          charDetector(tail, ["keyword" | list], "")
+
+        " " ->
+          charDetector(tail, list, "")
+
+        _ ->
+          charDetector(tail, list, status <> head)
+      end
+    end
+  end
+
+  @doc """
+  Helper function to construct the header of the HTML file. This is the part
+  that contains the CSS styles. It is called once at the beginning of the
+  program.
+  """
+  defp parse_html_header() do
     """
     <!DOCTYPE html>
     <html lang="en">
@@ -83,12 +172,19 @@ defmodule Syntax do
             .parenthesis { color: brown; }
             .method { color: brown; }
             .decorator { color: grey; }
-
         </style>
     </head>
     <body>
     <pre>
-    #{highlighted_text}
+    """
+  end
+
+  @doc """
+  Helper function to construct the HTML footer. Called after the code has been
+  highlighted.
+  """
+  defp parse_html_footer() do
+    """
     </pre>
     </body>
     </html>

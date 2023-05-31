@@ -3,12 +3,6 @@
 my_variable = 42
 another_variable = "Hello"
 
-# Extended strings (multiline strings)
-multiline_string = '''
-This is a multiline string.
-It can span across multiple lines.
-'''
-
 # Parameters
 def greet(name):
     print("Hello,", name)
