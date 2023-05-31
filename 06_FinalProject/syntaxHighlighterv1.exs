@@ -32,8 +32,7 @@ defmodule Syntaxhighlighter do
   Helper function to highlight a line of Python code using regex and output HTML.
 
   Issues:
-  - Everything matches when it's inside a comment or a string. For example:
-      # 34"yeah" print("hello") should be highlighted as a comment, but it's not.
+
   - / is matching escaped characters, so it is not an operator currently.
   - keyword "class" is not implemented because it will match "class" in the html tag.
   - Multiline strings don't seem to work.

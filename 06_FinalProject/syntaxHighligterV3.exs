@@ -30,10 +30,9 @@ defmodule Syntax do
     File.close(file)
   end
 
-  @doc """
-  Helper function to highlight a line of Python code using regex and output HTML.
-  """
   defp highlight_line(line, lst) do
+    # Helper function to highlight a line of Python code using regex and output HTML.
+
     IO.inspect(lst)
 
     Enum.reduce(lst, line, fn element, acc ->
@@ -80,22 +79,22 @@ defmodule Syntax do
     end)
   end
 
-  @doc """
-  Helper function to run the line highlighter with the list of character types that
-  the line contains (as determined by the charDetector function).
-  """
   defp helperFun(line) do
+    # Helper function to run the line highlighter with the list of character types that
+    # the line contains (as determined by the charDetector function).
     highlight_line(line, Enum.uniq(charDetector(String.graphemes(line <> " "), [], "")))
   end
 
-  @doc """
-  Function to detect the type of each character in a line of Python code to
-  only run the relevant regex on the line. This is to avoid running all regex on
-  every line.
-  """
   defp charDetector([head | tail], list, status) do
+    # Function to detect the type of each character in a line of Python code to
+    # only run the relevant regex on the line. This is to avoid running all regex on
+    # every line.
     if tail == [] do
-      list
+      if Enum.member?(list, "string") do
+        ["string" | list]
+      else
+        list
+      end
     else
       case head do
         a when status == "string" ->
@@ -147,12 +146,10 @@ defmodule Syntax do
     end
   end
 
-  @doc """
-  Helper function to construct the header of the HTML file. This is the part
-  that contains the CSS styles. It is called once at the beginning of the
-  program.
-  """
   defp parse_html_header() do
+    # Helper function to construct the header of the HTML file. This is the part
+    # that contains the CSS styles. It is called once at the beginning of the
+    # program.
     """
     <!DOCTYPE html>
     <html lang="en">
@@ -179,11 +176,9 @@ defmodule Syntax do
     """
   end
 
-  @doc """
-  Helper function to construct the HTML footer. Called after the code has been
-  highlighted.
-  """
   defp parse_html_footer() do
+    # Helper function to construct the HTML footer. Called after the code has been
+    # highlighted.
     """
     </pre>
     </body>
