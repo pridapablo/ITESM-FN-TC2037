@@ -32,6 +32,10 @@ defmodule Syntax do
 
   defp highlight_line(line, lst) do
     # Helper function to highlight a line of Python code using regex and output HTML.
+    #   Issues:
+    # - "/" and "=" is matching escaped characters, so it is not an operator currently.
+    # - keyword "class" is not implemented because it will match "class" in the html tag.
+    # - Multiline strings don't seem to work.
 
     IO.inspect(lst)
 
