@@ -3,7 +3,7 @@ defmodule Hw do
   # A number is prime if it is only divisible by 1 and itself
   def is_prime?(n) when n < 2, do: false
   def is_prime?(2), do: true
-  def is_prime?(n) when rem(n, 2) == 0, do: false
+  def is_prime?(3), do: true
 
   def is_prime?(n) do
     # Only need to check up to sqrt(n)
@@ -28,7 +28,6 @@ defmodule Hw do
   # Summation of prime numbers up to a given number (parallel)
   def sum_primes_parallel(limit, num_processes) do
     chunk_size = div(limit, num_processes)
-
     ranges = Enum.chunk_every(2..limit, chunk_size)
 
     tasks =
@@ -59,7 +58,6 @@ Timing.time_execution(fn -> Hw.sum_primes_parallel(13, 2) end)
 # Parallel with 4 processes
 Timing.time_execution(fn -> Hw.sum_primes_parallel(13, 4) end)
 
-# Tests
 IO.puts("is_prime?(2) = #{Hw.is_prime?(2)} should be true")
 IO.puts("is_prime?(3) = #{Hw.is_prime?(3)} should be true")
 IO.puts("is_prime?(4) = #{Hw.is_prime?(4)} should be false")
