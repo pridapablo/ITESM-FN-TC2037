@@ -25,19 +25,17 @@ defmodule Hw do
     |> Enum.sum()
   end
 
-  # Sums all prime numbers up to a given number (parallel)
+  # Summation of prime numbers up to a given number (parallel)
   def sum_primes_parallel(limit, num_processes) do
     chunk_size = div(limit, num_processes)
 
     Enum.chunk_every(2..limit, chunk_size)
-    |> IO.inspect()
-    |> Enum.map(&Task.async(fn -> sum_primes_chunk(&1) end))
-    |> Enum.map(&Task.await/1)
+    |> Enum.map(&Task.async(fn chunk -> sum_primes_chunk(chunk) end))
+    |> Enum.map(&Task.await(&1))
     |> Enum.sum()
   end
 
-  # Summation of prime numbers within a given chunk
-  def sum_primes_chunk(chunk) do
+  defp sum_primes_chunk(chunk) do
     Enum.filter(chunk, &is_prime?/1)
     |> Enum.sum()
   end
