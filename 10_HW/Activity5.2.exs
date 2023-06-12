@@ -27,18 +27,26 @@ defmodule Hw do
 
   # Sums all prime numbers up to a given number (parallel)
   def sum_primes_parallel(limit, num_processes) do
-    chunk_size = div(limit, num_processes)
-
-    Enum.chunk_every(2..limit, chunk_size)
-    |> IO.inspect()
-    |> Enum.map(&Task.async(fn -> sum_primes_chunk(&1) end))
+    generate_chunks(limit, num_processes)
+    |> Enum.map(&Task.async(fn -> sum_primes_in_range(&1) end))
     |> Enum.map(&Task.await/1)
     |> Enum.sum()
   end
 
-  # Summation of prime numbers within a given chunk
-  def sum_primes_chunk(chunk) do
-    Enum.filter(chunk, &is_prime?/1)
+  defp generate_chunks(limit, num_processes) do
+    chunk_size = div(limit, num_processes)
+
+    0..(num_processes - 1)
+    |> Enum.map(fn i ->
+      start = i * chunk_size + 2
+      stop = if i == num_processes - 1, do: limit, else: start + chunk_size - 1
+      {start, stop}
+    end)
+  end
+
+  def sum_primes_in_range({start, stop}) do
+    start..stop
+    |> Enum.filter(&is_prime?/1)
     |> Enum.sum()
   end
 end
