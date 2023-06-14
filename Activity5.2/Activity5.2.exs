@@ -2,21 +2,10 @@ defmodule Hw do
   # Helper function to check if a number is prime A number is prime if it is only divisible by 1 and
   # itself
   defp is_prime?(n) when n < 2, do: false
-  defp is_prime?(2), do: true
-  defp is_prime?(3), do: true
-
-  defp is_prime?(n) do
-    # Only need to check up to sqrt(n)
-    divisors = 2..trunc(:math.sqrt(n))
-    not divisible_by_any?(n, divisors)
-  end
-
-  # Helper function to check if a number is divisible by any of the divisors (called by is_prime?)
-  defp divisible_by_any?(num, divisors) do
-    divisors
-    |> Enum.map(fn divisor -> rem(num, divisor) == 0 end)
-    |> Enum.any?()
-  end
+  defp is_prime?(n), do: do_is_prime?(n, 2)
+  defp do_is_prime?(n, divisor) when n < divisor * divisor, do: true
+  defp do_is_prime?(n, divisor) when rem(n, divisor) == 0, do: false
+  defp do_is_prime?(n, divisor), do: do_is_prime?(n, divisor + 1)
 
   # Helper function to sum all prime numbers in a given range (called by sum_primes_parallel)
   defp sum_primes_in_range({start, stop}) do
@@ -66,13 +55,14 @@ end
 # Helper module to time the execution of a function (for speedup comparison)
 defmodule Timing do
   def time_execution(fun) do
-    {time, result} = :timer.tc(fun)
-    IO.puts("Execution time: #{time} microseconds")
-    IO.puts("Result: #{result}")
+    :timer.tc(fun)
+    |> elem(0)
+    |> Kernel./(1_000_000)
+    |> IO.inspect()
+
+    IO.puts("s")
   end
 end
-
-################# TESTS #################
 
 # Sequential
 Timing.time_execution(fn -> Hw.sum_primes(13) end)
@@ -82,12 +72,3 @@ Timing.time_execution(fn -> Hw.sum_primes_parallel(13, 2) end)
 
 # Parallel with 4 processes
 Timing.time_execution(fn -> Hw.sum_primes_parallel(13, 4) end)
-
-IO.puts("sum_primes(10) = #{Hw.sum_primes(10)} should be 17")
-IO.puts("sum_primes(100) = #{Hw.sum_primes(100)} should be 1060")
-IO.puts("sum_primes(1000) = #{Hw.sum_primes(1000)} should be 76127")
-
-IO.puts("sum_primes_parallel(10, 2) = #{Hw.sum_primes_parallel(10, 2)} should be 17")
-IO.puts("sum_primes_parallel(100, 2) = #{Hw.sum_primes_parallel(100, 2)} should be 1060")
-IO.puts("sum_primes_parallel(1000, 4) = #{Hw.sum_primes_parallel(1000, 4)} should be 76127")
-IO.puts("sum_primes_parallel(1000, 8) = #{Hw.sum_primes_parallel(1000, 8)} should be 76127")
