@@ -58,17 +58,6 @@ defmodule Timing do
     :timer.tc(fun)
     |> elem(0)
     |> Kernel./(1_000_000)
-    |> IO.inspect()
-
-    IO.puts("s")
+    |> IO.inspect(label: "Time in seconds")
   end
 end
-
-# Sequential
-Timing.time_execution(fn -> Hw.sum_primes(13) end)
-
-# Parallel with 2 processes
-Timing.time_execution(fn -> Hw.sum_primes_parallel(13, 2) end)
-
-# Parallel with 4 processes
-Timing.time_execution(fn -> Hw.sum_primes_parallel(13, 4) end)
