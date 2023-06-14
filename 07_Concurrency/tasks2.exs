@@ -8,12 +8,16 @@ defmodule Sums do
     Enum.sum(start..stop)
   end
 
+  def make_ranges(start, finish, cores) do
+    [{100, 200}, {201, 300}, {301, 400}, {401, 500}]
+  end
+
   # Function to sum numbers between 1000 and 9000
-  def total_sum() do
+  def total_sum(start, finish, cores) do
     IO.puts("MAIN THREAD STARTED")
 
     # Parallelize the sum by splitting the range into 4 parts
-    [{100, 200}, {201, 300}, {301, 400}, {401, 500}]
+    make_ranges(start, finish, cores)
     # Create a task for each range
     |> Enum.map(&Task.async(fn -> range_sum(&1) end))
     # Wait for all tasks to finish
@@ -27,4 +31,4 @@ defmodule Sums do
   end
 end
 
-Sums.total_sum()
+Sums.total_sum(1, 2, 3)
