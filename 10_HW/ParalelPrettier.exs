@@ -29,7 +29,7 @@ defmodule Syntaxhighlighter do
       {:ok, text} ->
         highlighted_text =
           text
-          |> String.split("\n")
+          |> String.split(~r/\n/, trim: false)
           |> Enum.map(&helperFun/1)
           |> Enum.join("\n")
 
@@ -229,7 +229,7 @@ defmodule Syntaxhighlighter do
           if val != "" do
             charDetector(tail, list <> "<span class=\"text\">" <> val <> " </span>", "", "")
           else
-            charDetector(tail, list, "", "")
+            charDetector(tail, list <> "<span> </span>", "", "")
           end
 
         _ ->
